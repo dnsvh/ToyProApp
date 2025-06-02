@@ -1,0 +1,34 @@
+{# templates/document/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Document{% endblock %}
+
+{% block body %}
+    <h1>Edit Document</h1>
+
+    {# Show link to current file if it exists #}
+    {% if currentFilename %}
+        <p>
+            <strong>Current file:</strong>
+            <a href="{{ asset('uploads/documents/' ~ currentFilename) }}" target="_blank">
+                {{ currentFilename }}
+            </a>
+        </p>
+    {% endif %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+
+    {# Show the “Upload new file” field #}
+    {{ form_row(form.documentFile) }}
+
+    {{ form_row(form.public) }}
+    {{ form_row(form.targetRoles) }}
+    {{ form_row(form.targetTags) }}
+    {{ form_row(form.targetUsers) }}
+
+    <button class="btn btn-primary">Save Changes</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_document_index') }}">Back to Documents</a>
+{% endblock %}

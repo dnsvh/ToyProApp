@@ -1,0 +1,47 @@
+{# templates/document/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Document: {{ document.title }}{% endblock %}
+
+{% block body %}
+    <h1>Document Details</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ document.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ document.title }}</td>
+        </tr>
+        <tr>
+            <th>Filename</th>
+            {# Provide a download/view link for the file #}
+            <td>
+                <a href="{{ asset('uploads/documents/' ~ document.filename) }}"
+                   target="_blank">
+                    {{ document.filename }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Upload Date</th>
+            <td>{{ document.uploadDate ? document.uploadDate|date('Y-m-d H:i') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Public</th>
+            <td>{{ document.public ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Uploaded By</th>
+            <td>{{ document.uploadedBy ? document.uploadedBy.email : '–' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_document_index') }}" class="btn btn-secondary">Back to list</a>
+    <a href="{{ path('app_document_edit', {id: document.id}) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ path('app_document_logs', {id: document.id}) }}" class="btn btn-info">View Logs</a>
+{% endblock %}

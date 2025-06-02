@@ -1,0 +1,16 @@
+{# templates/calendar_entry/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Calendar entry{% endblock %}
+
+{% block body %}
+    <h1>Edit Calendar entry #{{ calendar_entry.id }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Update</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_calendar_entry_index') }}">back to list</a>
+    <a href="{{ path('app_calendar_entry_show', { 'id': calendar_entry.id }) }}">view</a>
+{% endblock %}

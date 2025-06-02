@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Management{% endblock %}
+
+{% block body %}
+    <h1>User Management</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th><th>Name</th><th>Role</th><th>Teams</th><th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>{{ user.role.description }}</td>
+                <td>
+                    {% for tag in user.tags %}
+                        {{ tag.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_usermanagement_edit', {id: user.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

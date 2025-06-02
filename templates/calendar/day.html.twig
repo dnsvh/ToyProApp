@@ -1,0 +1,43 @@
+{# templates/calendar/day.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if entry.id %}
+        Edit Entry for {{ entry.getDate()|date('Y-m-d') }}
+    {% else %}
+        New Entry for {{ form.vars.value.getDate()|date('Y-m-d') }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {% if entry.id %}
+            Edit {{ entry.getUser().getFirstName() }}’s {{ entry.getDate()|date('Y-m-d') }}
+        {% else %}
+            New {{ entry.getUser().getFirstName() }}’s entry for {{ entry.getDate()|date('Y-m-d') }}
+        {% endif %}
+    </h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.date,      { 'disabled': true }) }}
+    {{ form_row(form.user,      { 'disabled': true }) }}
+    {{ form_row(form.clockIn) }}
+    {{ form_row(form.clockOut) }}
+    {{ form_row(form.hoursWorked, { 'disabled': true }) }}
+    {{ form_row(form.comment) }}
+    {{ form_row(form.tags) }}
+    <button class="btn btn-primary">
+        {% if entry.id %}Update{% else %}Create{% endif %}
+    </button>
+    {{ form_end(form) }}
+
+    <p>
+        <a href="{{ path('calendar_month_view', {
+            year:  entry.getDate().format('Y'),
+            month: entry.getDate().format('n'),
+            userId: entry.getUser().getId()
+        }) }}">
+            ← Back to month
+        </a>
+    </p>
+{% endblock %}

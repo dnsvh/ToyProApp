@@ -1,0 +1,25 @@
+<?php
+// src/Repository/DocumentLogRepository.php
+
+namespace App\Repository;
+
+use App\Entity\DocumentLog;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<DocumentLog>
+ *
+ * @method DocumentLog|null find($id, $lockMode = null, $lockVersion = null)
+ * @method DocumentLog|null findOneBy(array $criteria, array $orderBy = null)
+ * @method DocumentLog[]    findAll()
+ * @method DocumentLog[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class DocumentLogRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, DocumentLog::class);
+    }
+
+}

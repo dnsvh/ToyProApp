@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ToyProApp{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<nav>
+    <a href="{{ path('app_jobs') }}">Jobs</a>
+    {% if app.user %}
+        {# now points to "dashboard" #}
+        <a href="{{ path('dashboard') }}">Dashboard</a>
+        <a href="{{ path('app_announcement_index') }}">Announcements</a>
+        <a href="{{ path('app_logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ path('app_login') }}">Login</a>
+    {% endif %}
+</nav>
+
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

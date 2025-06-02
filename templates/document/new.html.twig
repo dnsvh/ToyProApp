@@ -1,0 +1,16 @@
+{# templates/document/new.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}Upload Document{% endblock %}
+{% block body %}
+    <h1>Upload Document</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.file) }}
+    {{ form_row(form.public) }}
+    {{ form_row(form.targetRoles) }}
+    {{ form_row(form.targetTags) }}
+    {{ form_row(form.targetUsers) }}
+    <button class="btn btn-primary">Save</button>
+    {{ form_end(form) }}
+    <a href="{{ path('app_document_index') }}">Back to list</a>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit {{ user.email }}{% endblock %}
+
+{% block body %}
+    <h1>Edit User: {{ user.email }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.email,    { disabled: true }) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.role) }}
+    {{ form_row(form.tags) }}
+    {{ form_row(form.enabled) }}
+    <button class="btn">Save Changes</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_usermanagement') }}">← Back to list</a>
+{% endblock %}

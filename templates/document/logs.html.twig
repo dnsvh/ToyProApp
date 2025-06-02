@@ -1,0 +1,34 @@
+{# templates/document/logs.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Document Logs{% endblock %}
+
+{% block body %}
+    <h1>Logs for “{{ document.title }}”</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>When</th>
+            <th>User</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                {# Calls getLoggedAt() #}
+                <td>{{ log.loggedAt|date('Y-m-d H:i') }}</td>
+                <td>{{ log.performedBy.email }}</td>
+                <td>{{ log.action }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No logs yet</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_document_index') }}">Back to Documents</a>
+{% endblock %}

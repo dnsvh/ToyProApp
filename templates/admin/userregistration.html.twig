@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register New User{% endblock %}
+
+{% block body %}
+    <h1>Register New User</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.role) }}
+    {{ form_row(form.tags) }}
+    <button class="btn">Create User</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
+{% endblock %}

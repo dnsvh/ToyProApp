@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ app.user.firstName }} {{ app.user.lastName }}!</p>
+
+    {# Clock‐in / Clock‐out button: #}
+    {% if activeEntry is not null %}
+        {# The user is currently clocked in #}
+        <form method="post" action="{{ path('calendar_clock_out') }}">
+            <button type="submit" class="btn btn-warning">Clock Out (since {{ activeEntry.clockIn|date('H:i') }})</button>
+        </form>
+    {% else %}
+        {# Not clocked in #}
+        <form method="post" action="{{ path('calendar_clock_in') }}">
+            <button type="submit" class="btn btn-success">Clock In</button>
+        </form>
+    {% endif %}
+
+    {# Link to calendar page for this month: #}
+    <p>
+        <a href="{{ path('calendar_month_default') }}">View your calendar</a>
+    </p>
+{% endblock %}

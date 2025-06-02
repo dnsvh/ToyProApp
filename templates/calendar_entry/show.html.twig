@@ -1,0 +1,33 @@
+{# templates/calendar_entry/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar entry #{{ calendar_entry.id }}{% endblock %}
+
+{% block body %}
+    <h1>Calendar entry #{{ calendar_entry.id }}</h1>
+
+    <table class="table">
+        <tr><th>Date</th><td>{{ calendar_entry.date ? calendar_entry.date|date('Y-m-d') : '' }}</td></tr>
+        <tr><th>Clock In</th><td>{{ calendar_entry.clockIn ? calendar_entry.clockIn|date('H:i') : '' }}</td></tr>
+        <tr><th>Clock Out</th><td>{{ calendar_entry.clockOut ? calendar_entry.clockOut|date('H:i') : '' }}</td></tr>
+        <tr><th>Hours Worked</th><td>{{ calendar_entry.hoursWorked }}</td></tr>
+        <tr><th>Comment</th><td>{{ calendar_entry.comment }}</td></tr>
+        <tr><th>User</th><td>{{ calendar_entry.user ? calendar_entry.user.email : '' }}</td></tr>
+        <tr><th>Tags</th>
+            <td>
+                {% for tag in calendar_entry.tags %}
+                    {{ tag.name }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+    <a href="{{ path('app_calendar_entry_index') }}">back to list</a>
+    <a href="{{ path('app_calendar_entry_edit', { 'id': calendar_entry.id }) }}">edit</a>
+
+    {# Delete form: #}
+    <form method="post" action="{{ path('app_calendar_entry_delete', { 'id': calendar_entry.id }) }}" onsubmit="return confirm('Are you sure?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar_entry.id) }}">
+        <button class="btn btn-danger">delete</button>
+    </form>
+{% endblock %}
