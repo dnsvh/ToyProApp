@@ -1,0 +1,66 @@
+<?php //App%255CController%255CCalendarController%2523monthView
+
+return [PHP_INT_MAX, static fn () => \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
+        clone $p['Symfony\\Component\\Routing\\Attribute\\Route'],
+    ],
+    null,
+    [
+        'Symfony\\Component\\Routing\\Attribute\\Route' => [
+            'path' => [
+                '/month/{year<\\d{4}>}/{month<\\d{1,2}>}',
+                '/month',
+            ],
+            'methods' => [
+                [
+                    'GET',
+                ],
+                [
+                    'GET',
+                ],
+            ],
+            'schemes' => [
+                [],
+                [],
+            ],
+            'name' => [
+                'calendar_month_view',
+                'calendar_month_default',
+            ],
+            'requirements' => [
+                [],
+                [],
+            ],
+            'options' => [
+                [],
+                [],
+            ],
+            'defaults' => [
+                [],
+                [],
+            ],
+            'host' => [
+                null,
+                null,
+            ],
+            'condition' => [
+                null,
+                null,
+            ],
+            'priority' => [
+                null,
+                null,
+            ],
+            'env' => [
+                null,
+                null,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+)];

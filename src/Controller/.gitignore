@@ -1,0 +1,5 @@
+# Symfony environment overrides
+/.env.local
+
+# Google service account key
+/config/google/service-account.json

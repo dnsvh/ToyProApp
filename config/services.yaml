@@ -1,8 +1,3 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     announcement_images_directory: '%kernel.project_dir%/public/uploads/announcements'
     documents_directory: '%kernel.project_dir%/public/uploads/documents'
@@ -22,5 +17,8 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Google Slides service
+    App\Service\GoogleSlidesService:
+        arguments:
+            $presentationId: '%env(string:GOOGLE_SLIDES_PRESENTATION_ID)%'
+            $credentialsPath: '%kernel.project_dir%/config/google/service-account.json'
