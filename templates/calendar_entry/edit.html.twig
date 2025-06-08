@@ -1,16 +1,77 @@
 {# templates/calendar_entry/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Calendar entry{% endblock %}
+{% block title %}Bewerk Tijdregistratie #{{ calendar_entry.id }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Calendar entry #{{ calendar_entry.id }}</h1>
+    <div class="container my-4">
+        <h1 class="mb-4">Bewerk Tijdregistratie #{{ calendar_entry.id }}</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Update</button>
-    {{ form_end(form) }}
+        {{ form_start(form, { attr: { class: 'row g-3' } }) }}
 
-    <a href="{{ path('app_calendar_entry_index') }}">back to list</a>
-    <a href="{{ path('app_calendar_entry_show', { 'id': calendar_entry.id }) }}">view</a>
+        <div class="col-md-4">
+            {{ form_row(form.date, {
+                label_attr: { class: 'form-label' },
+                attr:       { class: 'form-control' }
+            }) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.clockIn, {
+                label:     'Inkloktijd',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control' }
+            }) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.clockOut, {
+                label:     'Uitkloktijd',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control' }
+            }) }}
+        </div>
+
+        <div class="col-12">
+            <div class="form-group">
+                <label class="form-label">Gewerkte Minuten</label>
+                <input type="text"
+                       class="form-control-plaintext"
+                       readonly
+                       value="{{ (calendar_entry.hoursWorked * 60)|round }} min" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            {{ form_row(form.comment, {
+                label:     'Opmerking',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control', rows: 3 }
+            }) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_row(form.tags, {
+                label:     'Tags',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-select', multiple: 'multiple' }
+            }) }}
+        </div>
+
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">
+                Bijwerken
+            </button>
+            <a href="{{ path('app_calendar_entry_show', { id: calendar_entry.id }) }}"
+               class="btn btn-secondary ms-2">
+                Bekijken
+            </a>
+            <a href="{{ path('app_calendar_entry_index') }}"
+               class="btn btn-link ms-2">
+                Terug naar lijst
+            </a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

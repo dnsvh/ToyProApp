@@ -7,7 +7,7 @@ namespace Proxies\__CG__\App\Entity;
  */
 class Role extends \App\Entity\Role implements \Doctrine\ORM\Proxy\InternalProxy
 {
-    use \Symfony\Component\VarExporter\LazyGhostTrait {
+     use \Symfony\Component\VarExporter\LazyGhostTrait {
         initializeLazyObject as private;
         setLazyObjectAsInitialized as public __setInitialized;
         isLazyObjectInitialized as private;
@@ -30,7 +30,7 @@ class Role extends \App\Entity\Role implements \Doctrine\ORM\Proxy\InternalProxy
         'description' => [parent::class, 'description', null, 16],
         'id' => [parent::class, 'id', null, 16],
         'name' => [parent::class, 'name', null, 16],
-    ];
+    ];
 
     public function __isInitialized(): bool
     {

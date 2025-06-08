@@ -3,12 +3,12 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
-use App\Entity\CalendarTag;
 use App\Repository\CalendarEntryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeInterface;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: CalendarEntryRepository::class)]
 class CalendarEntry
@@ -20,17 +20,17 @@ class CalendarEntry
 
     /** The date of this entry (e.g. “2025-06-15”) */
     #[ORM\Column(type: 'date')]
-    private \DateTimeInterface $date;
+    private DateTimeInterface $date;
 
-    /** Time the user clocked in (nullable until they clock out) */
-    #[ORM\Column(type: 'time', nullable: true)]
-    private ?\DateTimeInterface $clockIn = null;
+    /** Full timestamp when the user clocked in */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $clockIn = null;
 
-    /** Time the user clocked out (nullable until they clock out) */
-    #[ORM\Column(type: 'time', nullable: true)]
-    private ?\DateTimeInterface $clockOut = null;
+    /** Full timestamp when the user clocked out */
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $clockOut = null;
 
-    /** Total hours worked (a float, or int) */
+    /** Total hours worked (in decimal hours) */
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $hoursWorked = null;
 
@@ -38,26 +38,17 @@ class CalendarEntry
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
 
-    /**
-     * Which user this entry belongs to.
-     * ManyToOne → one user can have many entries.
-     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'calendarEntries')]
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    /**
-     * @var Collection<int, CalendarTag>
-     * A ManyToMany relationship → an entry can have zero or more “tags” (e.g. “Vacation”, etc).
-     * We explicitly name the join table “calendar_entry_tags” so Doctrine will create that table.
-     */
     #[ORM\ManyToMany(targetEntity: CalendarTag::class)]
     #[ORM\JoinTable(name: "calendar_entry_tags")]
     private Collection $tags;
 
     public function __construct()
     {
-        $this->date        = new \DateTimeImmutable();
+        $this->date        = new DateTimeImmutable();
         $this->clockIn     = null;
         $this->clockOut    = null;
         $this->hoursWorked = null;
@@ -70,34 +61,34 @@ class CalendarEntry
         return $this->id;
     }
 
-    public function getDate(): \DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(DateTimeInterface $date): static
     {
         $this->date = $date;
         return $this;
     }
 
-    public function getClockIn(): ?\DateTimeInterface
+    public function getClockIn(): ?DateTimeInterface
     {
         return $this->clockIn;
     }
 
-    public function setClockIn(?\DateTimeInterface $clockIn): static
+    public function setClockIn(?DateTimeInterface $clockIn): static
     {
         $this->clockIn = $clockIn;
         return $this;
     }
 
-    public function getClockOut(): ?\DateTimeInterface
+    public function getClockOut(): ?DateTimeInterface
     {
         return $this->clockOut;
     }
 
-    public function setClockOut(?\DateTimeInterface $clockOut): static
+    public function setClockOut(?DateTimeInterface $clockOut): static
     {
         $this->clockOut = $clockOut;
         return $this;
@@ -136,9 +127,6 @@ class CalendarEntry
         return $this;
     }
 
-    /**
-     * @return Collection<int, CalendarTag>
-     */
     public function getTags(): Collection
     {
         return $this->tags;
@@ -158,11 +146,13 @@ class CalendarEntry
         return $this;
     }
 
+    /**
+     * Recompute hoursWorked based on clockIn/clockOut datetimes.
+     */
     public function recomputeHours(): void
     {
-        if ($this->clockIn instanceof \DateTimeInterface && $this->clockOut instanceof \DateTimeInterface) {
+        if ($this->clockIn instanceof DateTimeInterface && $this->clockOut instanceof DateTimeInterface) {
             $seconds = $this->clockOut->getTimestamp() - $this->clockIn->getTimestamp();
-
             $this->hoursWorked = round($seconds / 3600, 2);
         }
     }

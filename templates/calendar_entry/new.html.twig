@@ -1,15 +1,59 @@
 {# templates/calendar_entry/new.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Create new Calendar entry{% endblock %}
+{% block title %}Nieuwe Uurregistratie{% endblock %}
 
 {% block body %}
-    <h1>Create new Calendar entry</h1>
-
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Save</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('app_calendar_entry_index') }}">back to list</a>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0"><i class="bi bi-clock-history me-2"></i>Nieuwe Uurregistratie</h2>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+                        <div class="mb-3">
+                            {{ form_label(form.date, 'Datum', { label_attr: {'class':'form-label'} }) }}
+                            {{ form_widget(form.date, { attr: {'class':'form-control', readonly:'readonly'} }) }}
+                            {{ form_errors(form.date) }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.clockIn, 'Inklokken', { label_attr: {'class':'form-label'} }) }}
+                                {{ form_widget(form.clockIn, { attr: {'class':'form-control'} }) }}
+                                {{ form_errors(form.clockIn) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.clockOut, 'Uitklokken', { label_attr: {'class':'form-label'} }) }}
+                                {{ form_widget(form.clockOut, { attr: {'class':'form-control'} }) }}
+                                {{ form_errors(form.clockOut) }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.comment, 'Opmerking', { label_attr: {'class':'form-label'} }) }}
+                            {{ form_widget(form.comment, { attr: {'class':'form-control', rows:3} }) }}
+                            {{ form_errors(form.comment) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.tags, 'Tags', { label_attr: {'class':'form-label'} }) }}
+                            {{ form_widget(form.tags, { attr: {'class':'form-select', multiple:'multiple'} }) }}
+                            {{ form_errors(form.tags) }}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-save2 me-1"></i> Opslaan
+                            </button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{{ path('app_calendar_entry_index') }}" class="btn btn-link">
+                            <i class="bi bi-arrow-left-circle me-1"></i> Terug naar overzicht
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

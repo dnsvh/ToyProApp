@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ job.title }} — ToyPro{% endblock %}
+
+{% block body %}
+    <article class="job-detail">
+        <h1>{{ job.title }}</h1>
+        <p class="meta">{{ job.location }} &middot; {{ job.type }}</p>
+        <div class="description">
+            <p>{{ job.description }}</p>
+            {# You can expand this with bullet-points, requirements, etc. #}
+        </div>
+        <p>
+            <a class="btn" href="{{ path('job_list') }}">← Terug naar vacatures</a>
+            <a class="btn-primary" href="#">Solliciteer nu</a>
+        </p>
+    </article>
+{% endblock %}

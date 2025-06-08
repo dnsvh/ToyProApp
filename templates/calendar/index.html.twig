@@ -1,103 +1,110 @@
 {# templates/calendar/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Calendar – {{ targetUser.getFirstName() }} {{ targetUser.getLastName() }}
-{% endblock %}
+{% block title %}Kalender – {{ targetUser.firstName }} {{ targetUser.lastName }}{% endblock %}
 
 {% block body %}
-    <h1>Calendar – {{ targetUser.getFirstName() }} {{ targetUser.getLastName() }}</h1>
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="mb-0">Kalender – {{ targetUser.firstName }} {{ targetUser.lastName }}</h1>
+            <div>
+                {% set prev = firstOfMonth.modify('-1 month') %}
+                {% set next = firstOfMonth.modify('+1 month') %}
+                <a href="{{ path('calendar_month_view', {
+                    year: prev.format('Y'),
+                    month: prev.format('n'),
+                    userId: targetUser.id
+                }) }}"
+                   class="btn btn-outline-secondary me-1">
+                    ← Vorige
+                </a>
+                <a href="{{ path('calendar_month_view', {
+                    year: next.format('Y'),
+                    month: next.format('n'),
+                    userId: targetUser.id
+                }) }}"
+                   class="btn btn-outline-secondary">
+                    Volgende →
+                </a>
+            </div>
+        </div>
 
-    {% if allUsers is not empty %}
-        <form method="get"
-              action="{{ path('calendar_month_view', { year: year, month: month }) }}">
-            View user:
-            <select name="userId" onchange="this.form.submit()">
-                {% for user in allUsers %}
-                    <option
-                            value="{{ user.id }}"
-                            {{ user.id == targetUser.id ? 'selected' : '' }}
-                    >
-                        {{ user.getFirstName() }} {{ user.getLastName() }}
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-    {% endif %}
-
-    <h2>{{ year }}-{{ '%02d'|format(month) }}</h2>
-
-    {% set firstDayIndex = firstOfMonth.format('w') %}
-    {% set daysInMonth   = lastOfMonth.format('t') %}
-
-    {# Compute “commonTags” – true if currentUser and targetUser share any CalendarTag #}
-    {% set commonTags = false %}
-    {% for myTag in currentUser.getTags() %}
-        {% if myTag in targetUser.getTags() %}
-            {% set commonTags = true %}
+        {% if allUsers is not empty %}
+            <form method="get" class="row mb-4 gx-2 gy-2 align-items-center">
+                <label class="col-auto col-form-label">Gebruiker:</label>
+                <div class="col-auto">
+                    <select name="userId" class="form-select" onchange="this.form.submit()">
+                        {% for u in allUsers %}
+                            <option value="{{ u.id }}" {{ u.id == targetUser.id ? 'selected' : '' }}>
+                                {{ u.firstName }} {{ u.lastName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
         {% endif %}
-    {% endfor %}
 
-    <table class="table table-bordered text-center">
-        <thead>
-        <tr>
-            {% for dayName in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}
-                <th>{{ dayName }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% set dayCounter = 1 %}
-        {% for week in 0..5 %}
+        <h4>{{ year }} – {{ '%02d'|format(month) }}</h4>
+
+        <table class="table table-bordered text-center">
+            <thead class="table-light">
             <tr>
-                {% for dow in 0..6 %}
-                    {# Empty cells until we reach the first-of-month #}
-                    {% if week == 0 and dow < firstDayIndex %}
-                        <td></td>
-
-                    {% elseif dayCounter <= daysInMonth %}
-                        {% set dayStr   = '%02d'|format(dayCounter) %}
-                        {% set monthStr = '%02d'|format(month) %}
-                        {% set dateKey  = year ~ '-' ~ monthStr ~ '-' ~ dayStr %}
-                        {% set cellEntry = entryMap[dateKey] is defined ? entryMap[dateKey] : null %}
-
-                        <td style="vertical-align: top;">
-                            <div><strong>{{ dayCounter }}</strong></div>
-
-                            {% if cellEntry %}
-                                <div>⏱ Hours: {{ cellEntry.getHoursWorked() }}</div>
-                                <div>
-                                    <a href="{{ path('app_calendar_entry_show', { id: cellEntry.getId() }) }}">
-                                        Details
-                                    </a>
-                                </div>
-
-                            {% else %}
-                                {# Only show “+ Add” if: owner OR Admin OR (Manager+commonTags) #}
-                                {% if targetUser.id == currentUser.id
-                                    or is_granted('ROLE_ADMIN')
-                                    or ( is_granted('ROLE_MANAGER') and commonTags )
-                                %}
-                                    <div style="margin-top: .5em;">
-                                        <a href="{{ path('calendar_day_view', {
-                                            date: dateKey,
-                                            userId: targetUser.id
-                                        }) }}">
-                                            + Add
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        </td>
-
-                        {% set dayCounter = dayCounter + 1 %}
-
-                    {% else %}
-                        <td></td>
-                    {% endif %}
+                {% for dag in ['Zo','Ma','Di','Wo','Do','Vr','Za'] %}
+                    <th>{{ dag }}</th>
                 {% endfor %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% set dagNum = 1 %}
+            {% set startDow = firstOfMonth.format('w') + 0 %}
+            {% set daysInMonth = lastOfMonth.format('t') + 0 %}
+
+            {% for week in 0..5 %}
+                <tr>
+                    {% for dow in 0..6 %}
+                        {% if week == 0 and dow < startDow %}
+                            <td></td>
+                        {% elseif dagNum <= daysInMonth %}
+                            {% set datum = '%04d-%02d-%02d'|format(year, month, dagNum) %}
+                            {% set entry = entryMap[datum] ?? null %}
+                            <td style="vertical-align: top;">
+                                <div><strong>{{ dagNum }}</strong></div>
+
+                                {% if entry %}
+                                    <div class="mt-1">
+                                        <i class="bi bi-clock"></i>
+                                        {{ (entry.hoursWorked * 60)|round }} min
+                                    </div>
+                                    <a href="{{ path('calendar_day_view', { id: entry.id }) }}"
+                                       class="btn btn-sm btn-outline-primary mt-1">
+                                        Details
+                                    </a>
+                                {% else %}
+                                    {% if
+                                        targetUser.id == app.user.id
+                                        or is_granted('ROLE_ADMIN')
+                                        or (is_granted('ROLE_MANAGER') and commonTags)
+                                    %}
+                                        <div class="mt-1">
+                                            <a href="{{ path('calendar_day_view', {
+                                                date: datum,
+                                                userId: targetUser.id
+                                            }) }}"
+                                               class="btn btn-sm btn-outline-success">
+                                                + Toevoegen
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            {% set dagNum = dagNum + 1 %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

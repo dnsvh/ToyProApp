@@ -18,33 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
-    #[Route('/userregistration', name: 'admin_userregistration', methods: ['GET', 'POST'])]
-    public function register(
-        Request $request,
-        UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $em
-    ): Response {
-        $user = new User();
-        $form = $this->createForm(AdminUserRegistrationType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // hash & set the password
-            $plainPassword = $form->get('plainPassword')->getData();
-            $user->setPassword(
-                $passwordHasher->hashPassword($user, $plainPassword)
-            );
-
-            $em->persist($user);
-            $em->flush();
-
-            $this->addFlash('success', 'User '.$user->getEmail().' created!');
-            return $this->redirectToRoute('admin_userregistration');
-        }
-
-        return $this->render('admin/userregistration.html.twig', [
-            'form' => $form->createView(),
-        ]);
+    #[Route('/', name: 'admin_index', methods: ['GET'])]
+    public function index(): Response
+    {
+        // simple dashboard linking to the two subpages
+        return $this->render('admin/index.html.twig');
     }
 
     #[Route('/usermanagement', name: 'admin_usermanagement', methods: ['GET'])]
@@ -67,13 +45,41 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            $this->addFlash('success', 'User '.$user->getEmail().' updated.');
+            $this->addFlash('success', 'Gebruiker '.$user->getEmail().' is bijgewerkt.');
             return $this->redirectToRoute('admin_usermanagement');
         }
 
         return $this->render('admin/usermanagement_edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/userregistration', name: 'admin_userregistration', methods: ['GET', 'POST'])]
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $em
+    ): Response {
+        $user = new User();
+        $form = $this->createForm(AdminUserRegistrationType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // hash & set the password
+            $plainPassword = $form->get('plainPassword')->getData();
+            $user->setPassword(
+                $passwordHasher->hashPassword($user, $plainPassword)
+            );
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Gebruiker '.$user->getEmail().' is aangemaakt.');
+            return $this->redirectToRoute('admin_userregistration');
+        }
+
+        return $this->render('admin/userregistration.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

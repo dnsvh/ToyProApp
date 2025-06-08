@@ -1,55 +1,65 @@
-{# templates/calendar_entry/index.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Calendar entries{% endblock %}
+{% block title %}Mijn urenregistraties{% endblock %}
 
 {% block body %}
-    <h1>Calendar entries</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Urenregistraties</h1>
 
-    <a href="{{ path('app_calendar_entry_new') }}">Create new entry</a>
+        <a href="{{ path('app_calendar_entry_new') }}" class="btn btn-primary mb-3">
+            <i class="bi bi-plus-lg"></i> Nieuwe registratie
+        </a>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-            <th>Hours Worked</th>
-            <th>Comment</th>
-            <th>User</th>
-            <th>Tags</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entry in calendar_entries %}
-            <tr>
-                <td>{{ entry.id }}</td>
-                <td>{{ entry.date ? entry.date|date('Y-m-d') : '' }}</td>
-                <td>{{ entry.clockIn ? entry.clockIn|date('H:i') : '' }}</td>
-                <td>{{ entry.clockOut ? entry.clockOut|date('H:i') : '' }}</td>
-                <td>{{ entry.hoursWorked }}</td>
-                <td>{{ entry.comment }}</td>
-                <td>{{ entry.user ? entry.user.email : '' }}</td>
-                <td>
-                    {% for tag in entry.tags %}
-                        {{ tag.name }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    <a href="{{ path('app_calendar_entry_show', { 'id': entry.id }) }}">show</a>
-                    <a href="{{ path('app_calendar_entry_edit', { 'id': entry.id }) }}">edit</a>
-                    {# Delete form can live in a separate partial, but here's a quick inline example: #}
-                    <form method="post" action="{{ path('app_calendar_entry_delete', { 'id': entry.id }) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entry.id) }}">
-                        <button class="btn btn-danger btn-sm">delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr><td colspan="9">No entries found</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Datum</th>
+                    <th>In</th>
+                    <th>Uit</th>
+                    <th>Minuten</th>
+                    <th>Opmerking</th>
+                    <th>Acties</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entry in calendar_entries %}
+                    <tr>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.date|date('Y-m-d') }}</td>
+                        <td>{{ entry.clockIn ? entry.clockIn|date('H:i') : '' }}</td>
+                        <td>{{ entry.clockOut ? entry.clockOut|date('H:i') : '' }}</td>
+                        <td>{{ (entry.hoursWorked * 60)|round }} min</td>
+                        <td>{{ entry.comment }}</td>
+                        <td class="text-nowrap">
+                            <a href="{{ path('app_calendar_entry_show',{id:entry.id}) }}"
+                               class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-eye"></i> Bekijken
+                            </a>
+                            <a href="{{ path('app_calendar_entry_edit',{id:entry.id}) }}"
+                               class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil"></i> Bewerken
+                            </a>
+                            <form method="post"
+                                  action="{{ path('app_calendar_entry_delete',{id:entry.id}) }}"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Weet je het zeker?');">
+                                <input type="hidden"
+                                       name="_token"
+                                       value="{{ csrf_token('delete' ~ entry.id) }}">
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Verwijderen
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">Geen registraties gevonden.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,9 +1,8 @@
+# config/packages/security.yaml
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         app_user_provider:
             entity:
@@ -22,7 +21,6 @@ security:
 
             logout:
                 path: app_logout
-                # target: app_any_route
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -31,34 +29,20 @@ security:
                 always_remember_me: true
 
     access_control:
+        # only protect the truly private URLs:
+        - { path: ^/dashboard,             roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin,                 roles: ROLE_ADMIN }
+        - { path: ^/document/new,          roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/document/\d+/edit,     roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/document/\d+/delete,   roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/document/\d+/logs,     roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/document,              roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/announcement/new,      roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/announcement/\d+/edit, roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/announcement/\d+/delete,roles: [ROLE_ADMIN, ROLE_MANAGER] }
+        - { path: ^/announcement,          roles: IS_AUTHENTICATED_FULLY }
 
-        - { path: ^/document/new,      roles: [ROLE_ADMIN, ROLE_MANAGER] }
-        - { path: ^/document/\d+/edit, roles: [ROLE_ADMIN, ROLE_MANAGER] }
-        - { path: ^/document/\d+/delete, roles: [ROLE_ADMIN, ROLE_MANAGER] }
-
-
-        - { path: ^/document, roles: IS_AUTHENTICATED_FULLY }
-
-
-        - { path: ^/document/\d+/logs, roles: IS_AUTHENTICATED_FULLY }
-
-
-        - { path: ^/admin,                        roles: ROLE_ADMIN }
-
-
-        - { path: ^/announcement/new,             roles: [ROLE_ADMIN,ROLE_MANAGER] }
-        - { path: ^/announcement/\d+/edit,        roles: [ROLE_ADMIN,ROLE_MANAGER] }
-        - { path: ^/announcement/\d+/delete,      roles: [ROLE_ADMIN,ROLE_MANAGER] }
-        - { path: ^/announcement,                 roles: IS_AUTHENTICATED_FULLY }
-
-
-
-
-        - { path: ^/dashboard,                    roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/jobs,                         roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
-
-
+# test‐env override stays the same
 when@test:
     security:
         password_hashers:

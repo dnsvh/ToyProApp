@@ -1,26 +1,106 @@
+{# templates/dashboard/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
-    <h1>Dashboard</h1>
-    <p>Welcome, {{ app.user.firstName }} {{ app.user.lastName }}!</p>
+    <div class="container py-4">
 
-    {# Clock‐in / Clock‐out button: #}
-    {% if activeEntry is not null %}
-        {# The user is currently clocked in #}
-        <form method="post" action="{{ path('calendar_clock_out') }}">
-            <button type="submit" class="btn btn-warning">Clock Out (since {{ activeEntry.clockIn|date('H:i') }})</button>
-        </form>
-    {% else %}
-        {# Not clocked in #}
-        <form method="post" action="{{ path('calendar_clock_in') }}">
-            <button type="submit" class="btn btn-success">Clock In</button>
-        </form>
-    {% endif %}
+        {# Inklok-/uitklokknop #}
+        <div class="mb-4">
+            {% if activeEntry %}
+                <form method="post" action="{{ path('calendar_clock_out') }}">
+                    <button type="submit" class="btn btn-warning btn-lg w-100">
+                        Uitklokken (sinds {{ activeEntry.clockIn|date('H:i') }})
+                    </button>
+                </form>
+            {% else %}
+                <form method="post" action="{{ path('calendar_clock_in') }}">
+                    <button type="submit" class="btn btn-success btn-lg w-100">Inklokken</button>
+                </form>
+            {% endif %}
+        </div>
 
-    {# Link to calendar page for this month: #}
-    <p>
-        <a href="{{ path('calendar_month_default') }}">View your calendar</a>
-    </p>
+        {# Laatste aankondiging + volgende vijf #}
+        {% if latest %}
+            <div class="row mb-5 align-items-stretch">
+                {# Hero kaart #}
+                <div class="col-lg-8 d-flex mb-3 mb-lg-0">
+                    <div class="card h-100 w-100 shadow-sm d-flex flex-column">
+                        <div class="card-body overflow-auto flex-fill">
+                            <h3 class="card-title">{{ latest.title }}</h3>
+                            <p class="card-text">{{ latest.content }}</p>
+                            {% if latestComment %}
+                                <hr>
+                                <p class="mb-1">
+                                    <small>
+                                        Laatste opmerking door
+                                        <strong>{{ latestComment.sender.firstName }}
+                                            {{ latestComment.sender.lastName }}</strong>
+                                        op {{ latestComment.createdAt|date('d-m H:i') }}
+                                    </small>
+                                </p>
+                                <p>{{ latestComment.content }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {# Vijf recente #}
+                <div class="col-lg-4 d-flex">
+                    <div class="list-group w-100 shadow-sm overflow-auto">
+                        {% for ann in nextFive %}
+                            <a href="{{ path('app_announcement_show', {id: ann.id}) }}"
+                               class="list-group-item list-group-item-action">
+                                <strong>{{ ann.title }}</strong><br>
+                                <small>{{ ann.createdAt|date('d-m H:i') }}</small>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# Kalender van deze week #}
+        <h4 class="mb-3">
+            Deze week ({{ weekStart|date('d-m') }} – {{ weekEnd|date('d-m') }})
+        </h4>
+        <div class="d-flex mb-5">
+            {% set dagenNamen = {
+                1:'Ma',2:'Di',3:'Wo',4:'Do',5:'Vr',6:'Za',7:'Zo'
+            } %}
+            {% for day in weekDays %}
+                <div class="card flex-fill text-center mx-1">
+                    <div class="card-body py-3">
+                        <strong>{{ dagenNamen[day.date.format('N')] }}</strong><br>
+                        {{ day.date|date('d') }}<br>
+                        <small class="text-success">⏱ {{ day.minutesWorked }} min</small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Tegels onderaan #}
+        <div class="row gy-3">
+            <div class="col-md-6">
+                <a href="{{ path('app_document_index') }}"
+                   class="card h-100 text-center text-decoration-none text-dark shadow-sm">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5 class="mb-0">Documenten</h5>
+                    </div>
+                </a>
+            </div>
+            {# in dashboard/index.html.twig, under the row of tiles #}
+            <div class="col-md-6">
+                <a href="{{ path('app_profile') }}"
+                   class="card h-100 text-center text-decoration-none text-dark shadow-sm">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5 class="mb-0">Profiel</h5>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
 {% endblock %}

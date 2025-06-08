@@ -1,0 +1,7 @@
+{% for jsFile in encore_entry_js_files('backend', 'remote_build') %}
+    <script src="{{ asset(jsFile) }}"></script>
+{% endfor %}
+
+{% for cssFile in encore_entry_css_files('backend', 'remote_build') %}
+    <link rel="stylesheet" href="{{ asset(cssFile) }}" />
+{% endfor %}

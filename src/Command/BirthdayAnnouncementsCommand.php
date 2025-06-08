@@ -80,8 +80,8 @@ class BirthdayAnnouncementsCommand extends Command
 
             $announcement = new Announcement();
             $announcement
-                ->setTitle(sprintf('🎂 Happy Birthday, %s %s!', $user->getFirstName(), $user->getLastName()))
-                ->setContent(sprintf('Join us in wishing %s %s a very happy birthday!', $user->getFirstName(), $user->getLastName()))
+                ->setTitle(sprintf('🎂 Fijne verjaardag, %s %s!', $user->getFirstName(), $user->getLastName()))
+                ->setContent(sprintf('Gefeliciteerd %s %s met je verjaardag! Maak er een mooie dag van.', $user->getFirstName(), $user->getLastName()))
                 ->setInfoboard(true)
                 ->setCommentsEnabled(true)
                 ->setVisible(true)

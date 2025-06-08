@@ -1,4 +1,6 @@
-<?php
+﻿<?php
+// hide PHP deprecations for web requests
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 use App\Kernel;
 

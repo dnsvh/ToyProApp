@@ -1,27 +1,137 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}ToyProApp{% endblock %}</title>
+
+    {# CSS from Webpack Encore #}
+    {{ encore_entry_link_tags('app') }}
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<nav>
-    <a href="{{ path('app_jobs') }}">Jobs</a>
-    {% if app.user %}
-        {# now points to "dashboard" #}
-        <a href="{{ path('dashboard') }}">Dashboard</a>
-        <a href="{{ path('app_announcement_index') }}">Announcements</a>
-        <a href="{{ path('app_logout') }}">Logout</a>
-    {% else %}
-        <a href="{{ path('app_login') }}">Login</a>
-    {% endif %}
+
+{# ===== Notification Toast (for e.g. “Nieuwe aankondiging: …”) ===== #}
+{% for msg in app.flashes('notification') %}
+    <div id="toast-notification" class="alert alert-info notification-toast">
+        <span>{{ msg }}</span>
+        <button type="button" class="btn-close btn-sm" aria-label="Close" onclick="dismissToast()"></button>
+    </div>
+{% endfor %}
+
+{# ===== Navbar ===== #}
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+        {# Logo (upload your logo file to public/images/logo.png) #}
+        <a class="navbar-brand" href="{{ path('job_list') }}">
+            <img src="{{ asset('images/logo.png') }}"
+                 alt="ToyPro Logo"
+                 style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNav"
+                aria-controls="mainNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('job_list') }}">Vacatures</a>
+                </li>
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_announcement_index') }}">Mededelingen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('calendar_month_default') }}">Kalender</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_document_index') }}">Documenten</a>
+                    </li>
+                {% endif %}
+
+                {# Admin dropdown #}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                            <li>
+                                <a class="dropdown-item" href="{{ path('admin_userregistration') }}">
+                                    Gebruiker registreren
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('admin_usermanagement') }}">
+                                    Gebruikersbeheer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_profile') }}">
+                            {{ app.user.firstName }} {{ app.user.lastName }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Uitloggen</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Inloggen</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </nav>
 
-
-<main>
+<main class="container py-4">
     {% block body %}{% endblock %}
 </main>
+
+{{ encore_entry_script_tags('app') }}
+
+{# ===== Toast CSS & JS ===== #}
+<style>
+    .notification-toast {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1050;
+        min-width: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+</style>
+<script>
+    function dismissToast() {
+        const t = document.getElementById('toast-notification');
+        if (t) t.remove();
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        const t = document.getElementById('toast-notification');
+        if (!t) return;
+        setTimeout(dismissToast, 6000);
+        t.addEventListener('click', dismissToast);
+    });
+</script>
 
 {% block javascripts %}{% endblock %}
 </body>

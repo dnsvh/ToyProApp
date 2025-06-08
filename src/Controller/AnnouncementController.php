@@ -76,9 +76,11 @@ class AnnouncementController extends AbstractController
 
             // If "send to infoboard" was checked, push to Google Slides
             if ($announcement->isInfoboard()) {
-                // createSlideFromAnnouncement() is a method in GoogleSlidesService
                 $this->slidesService->createSlideFromAnnouncement($announcement);
             }
+
+            // <<< ADDED: notification flash >>>
+            $this->addFlash('notification', 'Nieuwe aankondiging: ' . $announcement->getTitle());
 
             return $this->redirectToRoute('app_announcement_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -178,6 +180,9 @@ class AnnouncementController extends AbstractController
                 $this->slidesService->updateSlideForAnnouncement($announcement);
             }
 
+            // <<< ADDED: notification flash >>>
+            $this->addFlash('notification', 'Aankondiging bijgewerkt: ' . $announcement->getTitle());
+
             return $this->redirectToRoute('app_announcement_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -200,6 +205,9 @@ class AnnouncementController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$announcement->getId(), $request->request->get('_token'))) {
             $entityManager->remove($announcement);
             $entityManager->flush();
+
+            // <<< ADDED: notification flash >>>
+            $this->addFlash('notification', 'Aankondiging verwijderd: ' . $announcement->getTitle());
         }
 
         return $this->redirectToRoute('app_announcement_index', [], Response::HTTP_SEE_OTHER);

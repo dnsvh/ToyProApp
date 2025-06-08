@@ -14,8 +14,9 @@ return [
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
-        '/admin/userregistration' => [[['_route' => 'admin_userregistration', '_controller' => 'App\\Controller\\AdminController::register'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/admin' => [[['_route' => 'admin_index', '_controller' => 'App\\Controller\\AdminController::index'], null, ['GET' => 0], null, true, false, null]],
         '/admin/usermanagement' => [[['_route' => 'admin_usermanagement', '_controller' => 'App\\Controller\\AdminController::manage'], null, ['GET' => 0], null, false, false, null]],
+        '/admin/userregistration' => [[['_route' => 'admin_userregistration', '_controller' => 'App\\Controller\\AdminController::register'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/announcement' => [[['_route' => 'app_announcement_index', '_controller' => 'App\\Controller\\AnnouncementController::index'], null, ['GET' => 0], null, true, false, null]],
         '/announcement/new' => [[['_route' => 'app_announcement_new', '_controller' => 'App\\Controller\\AnnouncementController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/calendar/day' => [[['_route' => 'calendar_day_view', '_controller' => 'App\\Controller\\CalendarController::dayView'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
@@ -26,10 +27,14 @@ return [
         '/dashboard' => [[['_route' => 'dashboard', '_controller' => 'App\\Controller\\DashboardController::index'], null, ['GET' => 0], null, false, false, null]],
         '/document' => [[['_route' => 'app_document_index', '_controller' => 'App\\Controller\\DocumentController::index'], null, ['GET' => 0], null, true, false, null]],
         '/document/new' => [[['_route' => 'app_document_new', '_controller' => 'App\\Controller\\DocumentController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        '/' => [[['_route' => 'app_jobs', '_controller' => 'App\\Controller\\JobsController::index'], null, null, null, false, false, null]],
-        '/jobs' => [[['_route' => 'app_jobs_list', '_controller' => 'App\\Controller\\JobsController::index'], null, null, null, false, false, null]],
+        '/no-access' => [[['_route' => 'no_access', '_controller' => 'App\\Controller\\ErrorController::noAccess'], null, null, null, false, false, null]],
+        '/' => [[['_route' => 'job_home', '_controller' => 'App\\Controller\\JobsController::index'], null, null, null, false, false, null]],
+        '/jobs' => [[['_route' => 'job_list', '_controller' => 'App\\Controller\\JobsController::index'], null, null, null, false, false, null]],
+        '/profile' => [[['_route' => 'app_profile', '_controller' => 'App\\Controller\\ProfileController::index'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
         '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
+        '/wachtwoord-vergeten' => [[['_route' => 'app_forgot_password', '_controller' => 'App\\Controller\\SecurityController::forgot'], null, null, null, false, false, null]],
+        '/forgot-password' => [[['_route' => 'app_forgot_password_en', '_controller' => 'App\\Controller\\SecurityController::forgot'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -81,6 +86,9 @@ return [
                     .')'
                     .'|(*:508)'
                 .')'
+                .'|/jobs/([^/]++)(*:531)'
+                .'|/wachtwoord\\-reset/([^/]++)(*:566)'
+                .'|/reset\\-password/([^/]++)(*:599)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -105,8 +113,11 @@ return [
         471 => [[['_route' => 'app_document_show', '_controller' => 'App\\Controller\\DocumentController::show'], ['id'], ['GET' => 0], null, false, true, null]],
         487 => [[['_route' => 'app_document_edit', '_controller' => 'App\\Controller\\DocumentController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
         499 => [[['_route' => 'app_document_logs', '_controller' => 'App\\Controller\\DocumentLogController::viewLogs'], ['id'], ['GET' => 0], null, false, false, null]],
-        508 => [
-            [['_route' => 'app_document_delete', '_controller' => 'App\\Controller\\DocumentController::delete'], ['id'], ['POST' => 0], null, false, true, null],
+        508 => [[['_route' => 'app_document_delete', '_controller' => 'App\\Controller\\DocumentController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        531 => [[['_route' => 'job_show', '_controller' => 'App\\Controller\\JobsController::show'], ['slug'], null, null, false, true, null]],
+        566 => [[['_route' => 'app_reset_password_nl', '_controller' => 'App\\Controller\\SecurityController::reset'], ['token'], null, null, false, true, null]],
+        599 => [
+            [['_route' => 'app_reset_password', '_controller' => 'App\\Controller\\SecurityController::reset'], ['token'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

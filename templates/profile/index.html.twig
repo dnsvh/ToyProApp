@@ -1,0 +1,58 @@
+{# templates/profile/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mijn Profiel{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <h1 class="mb-4">Mijn Profiel</h1>
+
+        <div class="row">
+            {# -- Linker kolom: gebruikersgegevens -- #}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <strong>Persoonlijke Gegevens</strong>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Voornaam:</strong> {{ user.firstName }}</p>
+                        <p><strong>Achternaam:</strong> {{ user.lastName }}</p>
+                        {% if user.birthday %}
+                            <p><strong>Geboortedatum:</strong> {{ user.birthday|date('d-m-Y') }}</p>
+                        {% endif %}
+                        {% if user.tags|length %}
+                            <p><strong>Teams:</strong>
+                                {{- user.tags|join(', ', tag => tag.name) -}}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# -- Rechter kolom: wachtwoord wijzigen -- #}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <strong>Wachtwoord wijzigen</strong>
+                    </div>
+                    <div class="card-body">
+                        {% for msg in app.flashes('success') %}
+                            <div class="alert alert-success">{{ msg }}</div>
+                        {% endfor %}
+
+                        {{ form_start(passwordForm) }}
+                        <div class="mb-3">
+                            {{ form_row(passwordForm.newPassword.first) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(passwordForm.newPassword.second) }}
+                        </div>
+                        <button class="btn btn-primary">Wijzig wachtwoord</button>
+                        {{ form_end(passwordForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

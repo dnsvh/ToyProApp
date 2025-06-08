@@ -3,41 +3,97 @@
 
 {% block title %}
     {% if entry.id %}
-        Edit Entry for {{ entry.getDate()|date('Y-m-d') }}
+        Bewerk {{ entry.user.firstName }}’s registratie — {{ entry.date|date('d-m-Y') }}
     {% else %}
-        New Entry for {{ form.vars.value.getDate()|date('Y-m-d') }}
+        Nieuwe registratie voor {{ entry.user.firstName }} — {{ entry.date|date('d-m-Y') }}
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h1>
-        {% if entry.id %}
-            Edit {{ entry.getUser().getFirstName() }}’s {{ entry.getDate()|date('Y-m-d') }}
-        {% else %}
-            New {{ entry.getUser().getFirstName() }}’s entry for {{ entry.getDate()|date('Y-m-d') }}
-        {% endif %}
-    </h1>
+    <div class="container my-4">
+        <h1 class="mb-4">
+            {% if entry.id %}
+                Bewerk registratie — {{ entry.date|date('d-m-Y') }}
+            {% else %}
+                Nieuwe registratie — {{ entry.date|date('d-m-Y') }}
+            {% endif %}
+        </h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.date,      { 'disabled': true }) }}
-    {{ form_row(form.user,      { 'disabled': true }) }}
-    {{ form_row(form.clockIn) }}
-    {{ form_row(form.clockOut) }}
-    {{ form_row(form.hoursWorked, { 'disabled': true }) }}
-    {{ form_row(form.comment) }}
-    {{ form_row(form.tags) }}
-    <button class="btn btn-primary">
-        {% if entry.id %}Update{% else %}Create{% endif %}
-    </button>
-    {{ form_end(form) }}
+        {{ form_start(form, { attr: { class: 'row g-3' } }) }}
 
-    <p>
-        <a href="{{ path('calendar_month_view', {
-            year:  entry.getDate().format('Y'),
-            month: entry.getDate().format('n'),
-            userId: entry.getUser().getId()
-        }) }}">
-            ← Back to month
-        </a>
-    </p>
+        {# Datum (readonly) #}
+        <div class="col-md-4">
+            {{ form_row(form.date, {
+                label:     'Datum',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control', readonly: 'readonly' }
+            }) }}
+        </div>
+
+        {# Gebruiker (readonly) #}
+        <div class="col-md-4">
+            {{ form_row(form.user, {
+                label:     'Gebruiker',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control', disabled: 'disabled' }
+            }) }}
+        </div>
+
+        {# Clock In #}
+        <div class="col-md-4">
+            {{ form_row(form.clockIn, {
+                label:     'Inkloktijd',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control' }
+            }) }}
+        </div>
+
+        {# Clock Out #}
+        <div class="col-md-4">
+            {{ form_row(form.clockOut, {
+                label:     'Uitkloktijd',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control' }
+            }) }}
+        </div>
+
+        {# Minutes Worked #}
+        <div class="col-md-4">
+            <label class="form-label">Gewerkte tijd (minuten)</label>
+            <input type="text"
+                   class="form-control-plaintext"
+                   readonly
+                   value="{{ (entry.hoursWorked * 60)|round }} min">
+        </div>
+
+        {# Opmerking #}
+        <div class="col-12">
+            {{ form_row(form.comment, {
+                label:     'Opmerking',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-control', rows: 3 }
+            }) }}
+        </div>
+
+        {# Tags #}
+        <div class="col-md-6">
+            {{ form_row(form.tags, {
+                label:     'Tags',
+                label_attr:{ class: 'form-label' },
+                attr:      { class: 'form-select', multiple: 'multiple' }
+            }) }}
+        </div>
+
+        {# Buttons #}
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">
+                {{ entry.id ? 'Bijwerken' : 'Opslaan' }}
+            </button>
+            <a href="{{ path('calendar_month_default') }}" class="btn btn-link ms-2">
+                Terug naar overzicht
+            </a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

@@ -1,51 +1,172 @@
 {# templates/document/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Documents{% endblock %}
+{% block title %}Documenten{% endblock %}
 
 {% block body %}
-    <h1>Documents</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Documenten</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Filename</th>
-            <th>Upload Date</th>
-            <th>Public</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for document in documents %}
-            <tr>
-                <td>{{ document.id }}</td>
-                <td>{{ document.title }}</td>
-                <td>{{ document.filename }}</td>
-                <td>{{ document.uploadDate ? document.uploadDate|date('Y-m-d H:i') : '' }}</td>
-                <td>{{ document.public ? 'Yes' : 'No' }}</td>
-                <td>
-                    {# “Show” link now points to the new app_document_show route #}
-                    <a href="{{ path('app_document_show', {id: document.id}) }}">show</a>
-                    <a href="{{ path('app_document_edit', {id: document.id}) }}">edit</a>
-                    <a href="{{ path('app_document_logs', {id: document.id}) }}">logs</a>
-                    <form method="post"
-                          action="{{ path('app_document_delete', {id: document.id}) }}"
-                          style="display:inline"
-                          onsubmit="return confirm('Are you sure you want to delete this document?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
-                        <button class="btn btn-sm btn-danger">delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no documents found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="row mb-3 gy-2">
+            {# Search #}
+            <div class="col-md-4">
+                <input
+                        id="docSearch"
+                        type="text"
+                        class="form-control"
+                        placeholder="🔍 Zoek op titel of bestand…"
+                >
+            </div>
 
-    <a href="{{ path('app_document_new') }}" class="btn btn-primary">Upload new document</a>
+            {# Filter Publiek/Nee #}
+            <div class="col-md-3">
+                <select id="docFilterPublic" class="form-select">
+                    <option value="">Alle zichtbaarheid</option>
+                    <option value="Ja">Publiek</option>
+                    <option value="Nee">Privé</option>
+                </select>
+            </div>
+
+            {# Sorteren dropdown #}
+            <div class="col-md-3">
+                <select id="docSortSelect" class="form-select">
+                    <option value="">Sorteer op…</option>
+                    <option value="date_desc">Datum (nieuw → oud)</option>
+                    <option value="date_asc">Datum (oud → nieuw)</option>
+                    <option value="title_asc">Titel (A → Z)</option>
+                    <option value="title_desc">Titel (Z → A)</option>
+                </select>
+            </div>
+
+            {# Nieuw document knop #}
+            <div class="col-md-2 text-md-end">
+                <a href="{{ path('app_document_new') }}" class="btn btn-primary">
+                    <i class="bi bi-upload me-1"></i> Nieuw document
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="documentsTable" class="table table-striped table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th data-sort="number">#</th>
+                    <th data-sort="text">Titel</th>
+                    <th data-sort="text">Bestandsnaam</th>
+                    <th data-sort="date">Datum upload</th>
+                    <th data-sort="text">Publiek</th>
+                    <th>Acties</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in documents %}
+                    <tr>
+                        <td>{{ document.id }}</td>
+                        <td>{{ document.title }}</td>
+                        <td>{{ document.filename }}</td>
+                        <td>{{ document.uploadDate ? document.uploadDate|date('Y-m-d H:i') : '' }}</td>
+                        <td>{{ document.public ? 'Ja' : 'Nee' }}</td>
+                        <td class="text-nowrap">
+                            <a class="btn btn-sm btn-outline-secondary me-1" title="Bekijken"
+                               href="{{ path('app_document_show', {id: document.id}) }}">
+                                <i class="bi bi-eye"></i> Bekijken
+                            </a>
+                            <a class="btn btn-sm btn-outline-primary me-1" title="Bewerken"
+                               href="{{ path('app_document_edit', {id: document.id}) }}">
+                                <i class="bi bi-pencil"></i> Bewerken
+                            </a>
+                            <a class="btn btn-sm btn-outline-info me-1" title="Logs"
+                               href="{{ path('app_document_logs', {id: document.id}) }}">
+                                <i class="bi bi-clock-history"></i> Logs
+                            </a>
+                            <form method="post"
+                                  action="{{ path('app_document_delete', {id: document.id}) }}"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Weet je zeker dat je dit document wilt verwijderen?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
+                                <button class="btn btn-sm btn-outline-danger" title="Verwijderen">
+                                    <i class="bi bi-trash"></i> Verwijderen
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Geen documenten gevonden.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('documentsTable');
+            const tbody = table.tBodies[0];
+            let rows = Array.from(tbody.rows);
+
+            // Search & Filter
+            const searchInput = document.getElementById('docSearch');
+            const filterSelect = document.getElementById('docFilterPublic');
+            function applySearchFilter() {
+                const q = searchInput.value.trim().toLowerCase();
+                const pub = filterSelect.value;
+                rows.forEach(r => {
+                    const text = r.textContent.toLowerCase();
+                    const matchesSearch = !q || text.includes(q);
+                    const matchesPub    = !pub || r.cells[4].textContent.trim() === pub;
+                    r.style.display = (matchesSearch && matchesPub) ? '' : 'none';
+                });
+            }
+            searchInput.addEventListener('input', applySearchFilter);
+            filterSelect.addEventListener('change', applySearchFilter);
+
+            // Click-to-sort on headers
+            table.querySelectorAll('th[data-sort]').forEach((th, idx) => {
+                let asc = true;
+                th.style.cursor = 'pointer';
+                th.addEventListener('click', () => {
+                    const type = th.getAttribute('data-sort');
+                    rows.sort((a, b) => {
+                        let x = a.cells[idx].textContent.trim();
+                        let y = b.cells[idx].textContent.trim();
+                        if (type === 'number') { x = parseFloat(x); y = parseFloat(y); }
+                        if (type === 'date')   { x = new Date(x); y = new Date(y); }
+                        if (x < y) return asc ? -1 : 1;
+                        if (x > y) return asc ? 1 : -1;
+                        return 0;
+                    });
+                    asc = !asc;
+                    rows.forEach(r => tbody.appendChild(r));
+                });
+            });
+
+            // Dropdown-based sort
+            document.getElementById('docSortSelect').addEventListener('change', function(e) {
+                const val = e.target.value;
+                let idx, asc;
+                if (val === 'date_desc') { idx = 3; asc = false; }
+                else if (val === 'date_asc')  { idx = 3; asc = true; }
+                else if (val === 'title_asc') { idx = 1; asc = true; }
+                else if (val === 'title_desc'){ idx = 1; asc = false; }
+                else return; // no-op
+                // reuse header-sort logic
+                const fakeTh = document.querySelector(`th[data-sort]`);
+                // sort rows
+                rows.sort((a,b) => {
+                    let x = a.cells[idx].textContent.trim();
+                    let y = b.cells[idx].textContent.trim();
+                    if (idx===3) { x = new Date(x); y = new Date(y); }
+                    if (x < y) return asc ? -1 : 1;
+                    if (x > y) return asc ? 1 : -1;
+                    return 0;
+                });
+                rows.forEach(r=>tbody.appendChild(r));
+            });
+        });
+    </script>
 {% endblock %}

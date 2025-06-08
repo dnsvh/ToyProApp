@@ -9,8 +9,8 @@
     <parameter key="kernel.runtime_mode.cli">%env(not:default:kernel.runtime_mode.web:)%</parameter>
     <parameter key="kernel.runtime_mode.worker">%env(bool:default::key:worker:default:kernel.runtime_mode:)%</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.build_dir">C:/Projects/TP/ToyProApp/var/cache/dev</parameter>
-    <parameter key="kernel.cache_dir">C:/Projects/TP/ToyProApp/var/cache/dev</parameter>
+    <parameter key="kernel.build_dir">C:\Projects\TP\ToyProApp\var\cache\dev</parameter>
+    <parameter key="kernel.cache_dir">C:\Projects\TP\ToyProApp\var\cache\dev</parameter>
     <parameter key="kernel.logs_dir">C:\Projects\TP\ToyProApp\var\log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
@@ -122,15 +122,15 @@
     <parameter key="translator.logging">false</parameter>
     <parameter key="translator.default_path">C:\Projects\TP\ToyProApp/translations</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
-    <parameter key="debug.container.dump">C:/Projects/TP/ToyProApp/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
+    <parameter key="debug.container.dump">C:\Projects\TP\ToyProApp\var\cache\dev/App_KernelDevDebugContainer.xml</parameter>
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
     <parameter key="router.resource">kernel::loadRoutes</parameter>
-    <parameter key="router.cache_dir">C:/Projects/TP/ToyProApp/var/cache/dev</parameter>
+    <parameter key="router.cache_dir">C:\Projects\TP\ToyProApp\var\cache\dev</parameter>
     <parameter key="request_listener.http_port">80</parameter>
     <parameter key="request_listener.https_port">443</parameter>
-    <parameter key="serializer.mapping.cache.file">C:/Projects/TP/ToyProApp/var/cache/dev/serialization.php</parameter>
+    <parameter key="serializer.mapping.cache.file">C:\Projects\TP\ToyProApp\var\cache\dev/serialization.php</parameter>
     <parameter key="cache.prefix.seed">_C:\Projects\TP\ToyProApp.App_KernelDevDebugContainer</parameter>
     <parameter key="session.metadata.storage_key">_sf2_meta</parameter>
     <parameter key="session.storage.options" type="collection">
@@ -144,11 +144,11 @@
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="form.type_extension.csrf.enabled">true</parameter>
     <parameter key="form.type_extension.csrf.field_name">_token</parameter>
-    <parameter key="validator.mapping.cache.file">C:/Projects/TP/ToyProApp/var/cache/dev/validation.php</parameter>
+    <parameter key="validator.mapping.cache.file">C:\Projects\TP\ToyProApp\var\cache\dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="profiler_listener.only_exceptions">false</parameter>
     <parameter key="profiler_listener.only_main_requests">false</parameter>
-    <parameter key="profiler.storage.dsn">file:C:/Projects/TP/ToyProApp/var/cache/dev/profiler</parameter>
+    <parameter key="profiler.storage.dsn">file:C:\Projects\TP\ToyProApp\var\cache\dev/profiler</parameter>
     <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
     <parameter key="doctrine.data_collector.class">Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector</parameter>
     <parameter key="doctrine.dbal.connection.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
@@ -214,7 +214,7 @@
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
     <parameter key="doctrine.orm.enable_lazy_ghost_objects">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">C:/Projects/TP/ToyProApp/var/cache/dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">C:\Projects\TP\ToyProApp\var\cache\dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
     <parameter key="doctrine.migrations.preferred_em">null</parameter>
     <parameter key="doctrine.migrations.preferred_connection">null</parameter>
@@ -445,11 +445,35 @@
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\DocumentLogController"/>
       </call>
     </service>
+    <service id="App\Controller\ErrorController" class="App\Controller\ErrorController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\ErrorController"/>
+      </call>
+    </service>
     <service id="App\Controller\JobsController" class="App\Controller\JobsController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\JobsController"/>
+      </call>
+    </service>
+    <service id="App\Controller\ProfileController" class="App\Controller\ProfileController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\ProfileController"/>
+      </call>
+    </service>
+    <service id="App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="security.user_password_hasher"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\ResetPasswordController"/>
       </call>
     </service>
     <service id="App\Controller\SecurityController" class="App\Controller\SecurityController" public="true" autowire="true" autoconfigure="true">
@@ -481,10 +505,19 @@
     <service id="App\Form\CalendarEntryForm" class="App\Form\CalendarEntryForm" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
+    <service id="App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Form\CommentType" class="App\Form\CommentType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Form\DocumentType" class="App\Form\DocumentType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\ForgotPasswordType" class="App\Form\ForgotPasswordType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\ResetPasswordType" class="App\Form\ResetPasswordType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
     <service id="App\Repository\AnnouncementRepository" class="App\Repository\AnnouncementRepository" autowire="true" autoconfigure="true">
@@ -526,6 +559,9 @@
     <service id="App\Security\LoginFormAuthenticator" class="App\Security\LoginFormAuthenticator" autowire="true" autoconfigure="true">
       <argument type="service" id="router.default"/>
     </service>
+    <service id="App\Security\NoAccessHandler" class="App\Security\NoAccessHandler" autowire="true" autoconfigure="true">
+      <argument type="service" id="router.default"/>
+    </service>
     <service id="App\Service\GoogleSlidesService" class="App\Service\GoogleSlidesService" autowire="true" autoconfigure="true">
       <argument>%env(string:GOOGLE_SLIDES_PRESENTATION_ID)%</argument>
       <argument>C:\Projects\TP\ToyProApp/config/google/service-account.json</argument>
@@ -557,7 +593,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.nRko3pH"/>
+      <argument type="service" id=".service_locator.Uxaz3az"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -640,7 +676,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/http_cache</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -650,7 +686,7 @@
       <tag name="container.no_preload"/>
       <argument type="tagged_iterator" tag="kernel.cache_warmer"/>
       <argument>true</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/App_KernelDevDebugContainerDeprecations.log</argument>
     </service>
     <service id="cache_clearer" class="Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer">
       <argument type="tagged_iterator" tag="kernel.cache_clearer"/>
@@ -1497,8 +1533,11 @@
         <argument>App\Form\AdminUserRegistrationType</argument>
         <argument>App\Form\AnnouncementForm</argument>
         <argument>App\Form\CalendarEntryForm</argument>
+        <argument>App\Form\ChangePasswordFormType</argument>
         <argument>App\Form\CommentType</argument>
         <argument>App\Form\DocumentType</argument>
+        <argument>App\Form\ForgotPasswordType</argument>
+        <argument>App\Form\ResetPasswordType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FileType</argument>
@@ -1656,7 +1695,7 @@
       <argument></argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1675,7 +1714,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/app</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -2009,7 +2048,7 @@
         </argument>
       </argument>
       <argument type="collection">
-        <argument key="cache_dir">C:/Projects/TP/ToyProApp/var/cache/dev/translations</argument>
+        <argument key="cache_dir">C:\Projects\TP\ToyProApp\var\cache\dev/translations</argument>
         <argument key="debug">true</argument>
         <argument key="resource_files" type="collection">
           <argument key="af" type="collection">
@@ -3329,7 +3368,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.nRko3pH"/>
+      <argument type="service" id=".service_locator.Uxaz3az"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3433,7 +3472,7 @@
       <argument type="service" id=".service_locator.otfny_1.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
-        <argument key="cache_dir">C:/Projects/TP/ToyProApp/var/cache/dev</argument>
+        <argument key="cache_dir">C:\Projects\TP\ToyProApp\var\cache\dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\CompiledUrlGenerator</argument>
         <argument key="generator_dumper_class">Symfony\Component\Routing\Generator\Dumper\CompiledUrlGeneratorDumper</argument>
@@ -3527,7 +3566,7 @@
     <service id="annotations.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\AnnotationsCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="annotations.reader"/>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/annotations.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/annotations.php</argument>
       <argument>#^Symfony\\(?:Component\\HttpKernel\\|Bundle\\FrameworkBundle\\Controller\\(?!.*Controller$))#</argument>
       <argument>true</argument>
       <argument>false</argument>
@@ -3535,7 +3574,7 @@
     </service>
     <service id="annotations.cache_adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
       <tag name="container.hot_path"/>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/annotations.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/annotations.php</argument>
       <argument type="service" id="cache.annotations"/>
       <deprecated package="symfony/framework-bundle" version="6.4">The "%service_id%" service is deprecated without replacement.</deprecated>
     </service>
@@ -3650,10 +3689,10 @@
           </service>
         </argument>
       </argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/serialization.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/serialization.php</argument>
     </service>
     <service id="serializer.mapping.cache.symfony" class="Psr\Cache\CacheItemPoolInterface">
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/serialization.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/serialization.php</argument>
       <argument type="service" id="cache.serializer"/>
       <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
     </service>
@@ -3789,7 +3828,7 @@
       <argument>true</argument>
     </service>
     <service id="session.storage.factory.mock_file" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorageFactory">
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/sessions</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service">
         <service class="Symfony\Component\HttpFoundation\Session\Storage\MetadataBag">
@@ -3857,7 +3896,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.rxgYrEV"/>
+      <argument type="service" id=".service_locator.OF7aUNa"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -3997,10 +4036,10 @@
     <service id="validator.mapping.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\ValidatorCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="validator.builder"/>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/validation.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/validation.php</argument>
     </service>
     <service id="validator.mapping.cache.adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/validation.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/validation.php</argument>
       <argument type="service" id="cache.validator"/>
     </service>
     <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
@@ -4660,7 +4699,7 @@
       </call>
     </service>
     <service id="profiler.storage" class="Symfony\Component\HttpKernel\Profiler\FileProfilerStorage">
-      <argument>file:C:/Projects/TP/ToyProApp/var/cache/dev/profiler</argument>
+      <argument>file:C:\Projects\TP\ToyProApp\var\cache\dev/profiler</argument>
     </service>
     <service id="profiler_listener" class="Symfony\Component\HttpKernel\EventListener\ProfilerListener">
       <tag name="kernel.event_subscriber"/>
@@ -4725,7 +4764,7 @@
       <tag name="monolog.logger" channel="profiler"/>
       <tag name="data_collector" template="@WebProfiler/Collector/logger.html.twig" id="logger" priority="300"/>
       <argument type="service" id="monolog.logger.profiler" on-invalid="ignore"/>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/App_KernelDevDebugContainer</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/App_KernelDevDebugContainer</argument>
       <argument type="service" id=".virtual_request_stack" on-invalid="ignore"/>
     </service>
     <service id="data_collector.time" class="Symfony\Component\HttpKernel\DataCollector\TimeDataCollector">
@@ -5287,7 +5326,7 @@
         <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
       </call>
       <call method="setProxyDir">
-        <argument>C:/Projects/TP/ToyProApp/var/cache/dev/doctrine/orm/Proxies</argument>
+        <argument>C:\Projects\TP\ToyProApp\var\cache\dev/doctrine/orm/Proxies</argument>
       </call>
       <call method="setProxyNamespace">
         <argument>Proxies</argument>
@@ -5705,7 +5744,7 @@
       <argument type="service" id="twig.loader.native_filesystem"/>
       <argument type="collection">
         <argument key="autoescape">name</argument>
-        <argument key="cache">C:/Projects/TP/ToyProApp/var/cache/dev/twig</argument>
+        <argument key="cache">C:\Projects\TP\ToyProApp\var\cache\dev/twig</argument>
         <argument key="charset">UTF-8</argument>
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
@@ -5769,9 +5808,6 @@
       </call>
       <call method="addExtension">
         <argument type="service" id="webpack_encore.twig_entry_files_extension"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="webpack_encore.twig_stimulus_extension"/>
       </call>
       <call method="addGlobal">
         <argument>app</argument>
@@ -6327,6 +6363,20 @@
     </service>
     <service id="security.access_map" class="Symfony\Component\Security\Http\AccessMap">
       <call method="add">
+        <argument type="service" id=".security.request_matcher.6_8FQx_"/>
+        <argument type="collection">
+          <argument>IS_AUTHENTICATED_FULLY</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
+        <argument type="service" id=".security.request_matcher.28NqKnb"/>
+        <argument type="collection">
+          <argument>ROLE_ADMIN</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
         <argument type="service" id=".security.request_matcher.7WDq_Fn"/>
         <argument type="collection">
           <argument>ROLE_ADMIN</argument>
@@ -6351,13 +6401,6 @@
         <argument>null</argument>
       </call>
       <call method="add">
-        <argument type="service" id=".security.request_matcher.jsMGT98"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_FULLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
         <argument type="service" id=".security.request_matcher.J3jVZcA"/>
         <argument type="collection">
           <argument>IS_AUTHENTICATED_FULLY</argument>
@@ -6365,9 +6408,9 @@
         <argument>null</argument>
       </call>
       <call method="add">
-        <argument type="service" id=".security.request_matcher.28NqKnb"/>
+        <argument type="service" id=".security.request_matcher.jsMGT98"/>
         <argument type="collection">
-          <argument>ROLE_ADMIN</argument>
+          <argument>IS_AUTHENTICATED_FULLY</argument>
         </argument>
         <argument>null</argument>
       </call>
@@ -6399,20 +6442,6 @@
         <argument type="service" id=".security.request_matcher.265drVe"/>
         <argument type="collection">
           <argument>IS_AUTHENTICATED_FULLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service" id=".security.request_matcher.6_8FQx_"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_FULLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service" id=".security.request_matcher.IvsPSJN"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
         </argument>
         <argument>null</argument>
       </call>
@@ -6991,6 +7020,22 @@
         <argument key="security.firewall.map.context.main" type="service_closure" id="security.firewall.map.context.main"/>
       </argument>
     </service>
+    <service id=".security.request_matcher.J6VGRO9" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
+      <argument>^/dashboard</argument>
+    </service>
+    <service id=".security.request_matcher.6_8FQx_" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
+      <argument type="collection">
+        <argument type="service" id=".security.request_matcher.J6VGRO9"/>
+      </argument>
+    </service>
+    <service id=".security.request_matcher.obhk0jm" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
+      <argument>^/admin</argument>
+    </service>
+    <service id=".security.request_matcher.28NqKnb" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
+      <argument type="collection">
+        <argument type="service" id=".security.request_matcher.obhk0jm"/>
+      </argument>
+    </service>
     <service id=".security.request_matcher.VaAmTBH" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
       <argument>^/document/new</argument>
     </service>
@@ -7015,14 +7060,6 @@
         <argument type="service" id=".security.request_matcher.WqI8lyF"/>
       </argument>
     </service>
-    <service id=".security.request_matcher.WH2QsZu" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
-      <argument>^/document</argument>
-    </service>
-    <service id=".security.request_matcher.jsMGT98" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
-      <argument type="collection">
-        <argument type="service" id=".security.request_matcher.WH2QsZu"/>
-      </argument>
-    </service>
     <service id=".security.request_matcher.jSWV25m" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
       <argument>^/document/\d+/logs</argument>
     </service>
@@ -7031,12 +7068,12 @@
         <argument type="service" id=".security.request_matcher.jSWV25m"/>
       </argument>
     </service>
-    <service id=".security.request_matcher.obhk0jm" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
-      <argument>^/admin</argument>
+    <service id=".security.request_matcher.WH2QsZu" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
+      <argument>^/document</argument>
     </service>
-    <service id=".security.request_matcher.28NqKnb" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
+    <service id=".security.request_matcher.jsMGT98" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
       <argument type="collection">
-        <argument type="service" id=".security.request_matcher.obhk0jm"/>
+        <argument type="service" id=".security.request_matcher.WH2QsZu"/>
       </argument>
     </service>
     <service id=".security.request_matcher.wznNkdW" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
@@ -7069,22 +7106,6 @@
     <service id=".security.request_matcher.265drVe" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
       <argument type="collection">
         <argument type="service" id=".security.request_matcher.HDE.Kh7"/>
-      </argument>
-    </service>
-    <service id=".security.request_matcher.J6VGRO9" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
-      <argument>^/dashboard</argument>
-    </service>
-    <service id=".security.request_matcher.6_8FQx_" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
-      <argument type="collection">
-        <argument type="service" id=".security.request_matcher.J6VGRO9"/>
-      </argument>
-    </service>
-    <service id=".security.request_matcher.UhYpyFQ" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
-      <argument>^/jobs</argument>
-    </service>
-    <service id=".security.request_matcher.IvsPSJN" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
-      <argument type="collection">
-        <argument type="service" id=".security.request_matcher.UhYpyFQ"/>
       </argument>
     </service>
     <service id="security.command.user_password_hash" class="Symfony\Component\PasswordHasher\Command\UserPasswordHashCommand">
@@ -7456,18 +7477,16 @@
       <tag name="twig.extension"/>
       <argument type="service" id=".1_ServiceLocator~l8kL5ab"/>
     </service>
-    <service id="webpack_encore.twig_stimulus_extension" class="Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension">
-      <tag name="twig.extension"/>
-    </service>
     <service id="webpack_encore.entrypoint_lookup.cache_warmer" class="Symfony\WebpackEncoreBundle\CacheWarmer\EntrypointCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="collection">
         <argument key="_default">C:\Projects\TP\ToyProApp/public/build/entrypoints.json</argument>
       </argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/webpack_encore.cache.php</argument>
+      <argument type="service" id=".debug.http_client" on-invalid="null"/>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/webpack_encore.cache.php</argument>
     </service>
     <service id="webpack_encore.cache" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/webpack_encore.cache.php</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/webpack_encore.cache.php</argument>
       <argument type="service" id="cache.webpack_encore"/>
     </service>
     <service id="cache.webpack_encore" class="Symfony\Component\Cache\Adapter\TraceableAdapter">
@@ -7496,6 +7515,7 @@
       <argument>null</argument>
       <argument>_default</argument>
       <argument>true</argument>
+      <argument type="service" id=".debug.http_client" on-invalid="null"/>
     </service>
     <service id=".service_locator.Yi4Ff.p" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -7563,9 +7583,18 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\DocumentLogController" class="App\Controller\DocumentLogController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\DocumentLogController" class="App\Controller\DocumentLogController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\DocumentLogController" class="App\Controller\DocumentLogController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ErrorController" class="App\Controller\ErrorController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ErrorController" class="App\Controller\ErrorController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ErrorController" class="App\Controller\ErrorController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\JobsController" class="App\Controller\JobsController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\JobsController" class="App\Controller\JobsController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\JobsController" class="App\Controller\JobsController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ProfileController" class="App\Controller\ProfileController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ResetPasswordController" class="App\Controller\ResetPasswordController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -7583,10 +7612,16 @@
     <service id=".abstract.instanceof.App\Form\AnnouncementForm" class="App\Form\AnnouncementForm" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CalendarEntryForm" class="App\Form\CalendarEntryForm" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\CalendarEntryForm" class="App\Form\CalendarEntryForm" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CommentType" class="App\Form\CommentType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\CommentType" class="App\Form\CommentType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\DocumentType" class="App\Form\DocumentType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\DocumentType" class="App\Form\DocumentType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ForgotPasswordType" class="App\Form\ForgotPasswordType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\ForgotPasswordType" class="App\Form\ForgotPasswordType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ResetPasswordType" class="App\Form\ResetPasswordType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\ResetPasswordType" class="App\Form\ResetPasswordType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AnnouncementRepository" class="App\Repository\AnnouncementRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AnnouncementRepository" class="App\Repository\AnnouncementRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CalendarEntryRepository" class="App\Repository\CalendarEntryRepository" autowire="true" abstract="true"/>
@@ -8028,13 +8063,6 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
-    <service id=".service_locator.t8346QO" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
-        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
-      </argument>
-    </service>
     <service id=".service_locator.bYqs9Eo" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8046,6 +8074,13 @@
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="user" type="service_closure" id=".errored..service_locator.GkGK2OS.App\Entity\User"/>
+      </argument>
+    </service>
+    <service id=".service_locator.t8346QO" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="passwordHasher" type="service_closure" id="security.user_password_hasher"/>
       </argument>
     </service>
     <service id=".service_locator.AiNvJdq" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8101,9 +8136,10 @@
         <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
-    <service id=".service_locator.bJ1yb7y" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.CTfxHUd" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="annRepo" type="service_closure" id="App\Repository\AnnouncementRepository"/>
         <argument key="entryRepo" type="service_closure" id="App\Repository\CalendarEntryRepository"/>
       </argument>
     </service>
@@ -8138,7 +8174,7 @@
         <argument key="authenticationUtils" type="service_closure" id="security.authentication_utils"/>
       </argument>
     </service>
-    <service id=".service_locator.nRko3pH" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Uxaz3az" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::editUser" type="service_closure" id=".service_locator.GkGK2OS"/>
@@ -8155,7 +8191,7 @@
         <argument key="App\Controller\CalendarEntryController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\CalendarEntryController::show" type="service_closure" id=".service_locator.2BrnKx3"/>
         <argument key="App\Controller\CommentController::delete" type="service_closure" id=".service_locator.sE8VhYE"/>
-        <argument key="App\Controller\DashboardController::index" type="service_closure" id=".service_locator.bJ1yb7y"/>
+        <argument key="App\Controller\DashboardController::index" type="service_closure" id=".service_locator.CTfxHUd"/>
         <argument key="App\Controller\DocumentController::delete" type="service_closure" id=".service_locator.laaXC88"/>
         <argument key="App\Controller\DocumentController::edit" type="service_closure" id=".service_locator.laaXC88"/>
         <argument key="App\Controller\DocumentController::index" type="service_closure" id=".service_locator.UCjRy9H"/>
@@ -8163,6 +8199,7 @@
         <argument key="App\Controller\DocumentController::new" type="service_closure" id=".service_locator.9kKwU2t"/>
         <argument key="App\Controller\DocumentController::show" type="service_closure" id=".service_locator.Q8RAY9A"/>
         <argument key="App\Controller\DocumentLogController::viewLogs" type="service_closure" id=".service_locator.Q8RAY9A"/>
+        <argument key="App\Controller\ProfileController::index" type="service_closure" id=".service_locator.t8346QO"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
@@ -8182,7 +8219,7 @@
         <argument key="App\Controller\CalendarEntryController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\CalendarEntryController:show" type="service_closure" id=".service_locator.2BrnKx3"/>
         <argument key="App\Controller\CommentController:delete" type="service_closure" id=".service_locator.sE8VhYE"/>
-        <argument key="App\Controller\DashboardController:index" type="service_closure" id=".service_locator.bJ1yb7y"/>
+        <argument key="App\Controller\DashboardController:index" type="service_closure" id=".service_locator.CTfxHUd"/>
         <argument key="App\Controller\DocumentController:delete" type="service_closure" id=".service_locator.laaXC88"/>
         <argument key="App\Controller\DocumentController:edit" type="service_closure" id=".service_locator.laaXC88"/>
         <argument key="App\Controller\DocumentController:index" type="service_closure" id=".service_locator.UCjRy9H"/>
@@ -8190,6 +8227,7 @@
         <argument key="App\Controller\DocumentController:new" type="service_closure" id=".service_locator.9kKwU2t"/>
         <argument key="App\Controller\DocumentController:show" type="service_closure" id=".service_locator.Q8RAY9A"/>
         <argument key="App\Controller\DocumentLogController:viewLogs" type="service_closure" id=".service_locator.Q8RAY9A"/>
+        <argument key="App\Controller\ProfileController:index" type="service_closure" id=".service_locator.t8346QO"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
@@ -8352,15 +8390,18 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.rxgYrEV" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.OF7aUNa" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Form\AdminUserManagementType" type="service_closure" id="App\Form\AdminUserManagementType"/>
         <argument key="App\Form\AdminUserRegistrationType" type="service_closure" id="App\Form\AdminUserRegistrationType"/>
         <argument key="App\Form\AnnouncementForm" type="service_closure" id="App\Form\AnnouncementForm"/>
         <argument key="App\Form\CalendarEntryForm" type="service_closure" id="App\Form\CalendarEntryForm"/>
+        <argument key="App\Form\ChangePasswordFormType" type="service_closure" id="App\Form\ChangePasswordFormType"/>
         <argument key="App\Form\CommentType" type="service_closure" id="App\Form\CommentType"/>
         <argument key="App\Form\DocumentType" type="service_closure" id="App\Form\DocumentType"/>
+        <argument key="App\Form\ForgotPasswordType" type="service_closure" id="App\Form\ForgotPasswordType"/>
+        <argument key="App\Form\ResetPasswordType" type="service_closure" id="App\Form\ResetPasswordType"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ColorType" type="service_closure" id="form.type.color"/>
@@ -8908,9 +8949,27 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\ErrorController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ErrorController"/>
+      <argument>App\Controller\ErrorController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.O2p6Lk7.App\Controller\JobsController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\JobsController"/>
       <argument>App\Controller\JobsController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\ProfileController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ProfileController"/>
+      <argument>App\Controller\ProfileController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\ResetPasswordController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ResetPasswordController"/>
+      <argument>App\Controller\ResetPasswordController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
@@ -9110,7 +9169,10 @@
           <argument>App\Controller\DashboardController</argument>
           <argument>App\Controller\DocumentController</argument>
           <argument>App\Controller\DocumentLogController</argument>
+          <argument>App\Controller\ErrorController</argument>
           <argument>App\Controller\JobsController</argument>
+          <argument>App\Controller\ProfileController</argument>
+          <argument>App\Controller\ResetPasswordController</argument>
           <argument>App\Controller\SecurityController</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
@@ -10191,7 +10253,7 @@
     <service id="cache.app.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>jYUxOoqIFd</argument>
       <argument>0</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/app</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10201,7 +10263,7 @@
       <argument>F8etUMXlnw</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10209,7 +10271,7 @@
       <argument>pUS7N93LxL</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10217,7 +10279,7 @@
       <argument>UpUvlQatWh</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10225,7 +10287,7 @@
       <argument>vfuXyoCPQ7</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10233,14 +10295,14 @@
       <argument>WSGVl0ew8q</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.messenger.restart_workers_signal.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>V+5jPEHCun</argument>
       <argument>0</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/app</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10250,7 +10312,7 @@
       <argument>GKgEf1YFj8</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10260,7 +10322,7 @@
       <argument>Z8juxoEv0J</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10268,7 +10330,7 @@
       <argument>+ElrM+d338</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10276,7 +10338,7 @@
       <argument>IdxDKGAuXt</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10284,7 +10346,7 @@
       <argument>C0URuSiY9Z</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:/Projects/TP/ToyProApp/var/cache/dev/pools/system</argument>
+      <argument>C:\Projects\TP\ToyProApp\var\cache\dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -10469,7 +10531,7 @@
     <service id="Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface" alias="webpack_encore.entrypoint_lookup[_default]"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.w7.f4fT" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.nRko3pH"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.Uxaz3az"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -10492,12 +10554,13 @@
     <service id=".service_locator.h8Jkkd2" alias="messenger.retry_strategy_locator"/>
     <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~l8kL5ab"/>
     <service id=".service_locator.bJ.4HC5" alias=".service_locator.w7.f4fT"/>
-    <service id=".service_locator.81LTOQ7" alias=".service_locator.t8346QO"/>
     <service id=".service_locator.LLEuAX_" alias=".service_locator.GkGK2OS"/>
+    <service id=".service_locator.81LTOQ7" alias=".service_locator.t8346QO"/>
     <service id=".service_locator.Fn910Hr" alias=".service_locator.Fmc9k7c"/>
-    <service id=".service_locator.TtZ9VuX" alias=".service_locator.nRko3pH"/>
+    <service id=".service_locator.uqjIcDc" alias=".service_locator.CTfxHUd"/>
+    <service id=".service_locator.rDJhpRY" alias=".service_locator.Uxaz3az"/>
     <service id=".service_locator.BFrsqsn" alias=".service_locator.F9PKc.7"/>
-    <service id=".service_locator._P5NUxR" alias=".service_locator.rxgYrEV"/>
+    <service id=".service_locator.U5NhsBu" alias=".service_locator.OF7aUNa"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
     <service id=".service_locator.O24_MAy" alias=".service_locator.yY.p4P7"/>
     <service id=".service_locator.jUv.zyj" alias=".service_locator.O2p6Lk7"/>
@@ -10518,9 +10581,9 @@
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
-    <service id=".service_locator.PgYGRUQ" alias=".service_locator.t8346QO"/>
     <service id=".service_locator.88Hujv9" alias=".service_locator.bYqs9Eo"/>
     <service id=".service_locator.xmcroQs" alias=".service_locator.GkGK2OS"/>
+    <service id=".service_locator.PgYGRUQ" alias=".service_locator.t8346QO"/>
     <service id=".service_locator.Agbc51S" alias=".service_locator.AiNvJdq"/>
     <service id=".service_locator.9e2t_lq" alias=".service_locator.CsMkqUa"/>
     <service id=".service_locator.a3SrAr6" alias=".service_locator.Fmc9k7c"/>
@@ -10529,7 +10592,7 @@
     <service id=".service_locator...otb0g" alias=".service_locator.2BrnKx3"/>
     <service id=".service_locator.pa2WkQR" alias=".service_locator.20D_ARC"/>
     <service id=".service_locator.kXuNxP5" alias=".service_locator.sE8VhYE"/>
-    <service id=".service_locator.4lemawx" alias=".service_locator.bJ1yb7y"/>
+    <service id=".service_locator.SM_V_2o" alias=".service_locator.CTfxHUd"/>
     <service id=".service_locator.KU8rMPp" alias=".service_locator.UCjRy9H"/>
     <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
     <service id=".service_locator.135c9af" alias=".service_locator.Q8RAY9A"/>

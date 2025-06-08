@@ -1,16 +1,109 @@
-{# templates/document/new.html.twig #}
 {% extends 'base.html.twig' %}
-{% block title %}Upload Document{% endblock %}
+
+{% block title %}Document uploaden{% endblock %}
+
 {% block body %}
-    <h1>Upload Document</h1>
+    <h1>Document uploaden</h1>
+
     {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.documentFile) }}
-    {{ form_row(form.public) }}
-    {{ form_row(form.targetRoles) }}
-    {{ form_row(form.targetTags) }}
-    {{ form_row(form.targetUsers) }}
-    <button class="btn btn-primary">Save</button>
+
+    <div class="mb-3">
+        {{ form_row(form.title, { label: 'Titel' }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.documentFile, { label: 'Bestand' }) }}
+    </div>
+
+    {# --- Manual Public/Privé toggle --- #}
+    <div class="mb-3">
+        <label class="me-3">
+            <input type="radio" name="{{ form.public.vars.full_name }}" value="1" checked>
+            Publiek
+        </label>
+        <label>
+            <input type="radio" name="{{ form.public.vars.full_name }}" value="0">
+            Privé
+        </label>
+    </div>
+
+    {# --- Hidden real fields (mark them "rendered" so form_rest won't duplicate) --- #}
+    <div style="display:none">
+        {{ form_row(form.public) }}
+        {{ form_row(form.targetRoles) }}
+        {{ form_row(form.targetTags) }}
+        {{ form_row(form.targetUsers) }}
+    </div>
+
+    {# --- Combined dual-list picker --- #}
+    <div id="access-picker" class="mb-4" style="display:none">
+        <h5>Geselecteerde toegang</h5>
+        <div id="selected-list" class="border p-2 mb-2" style="min-height:2rem"></div>
+        <input type="text" id="search-selected" class="form-control form-control-sm mb-3" placeholder="Zoeken…">
+
+        <h5>Beschikbaar</h5>
+        <input type="text" id="search-unselected" class="form-control form-control-sm mb-2" placeholder="Zoeken…">
+        <div id="unselected-list" class="border p-2" style="min-height:2rem"></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Uploaden</button>
+
+    {{ form_rest(form) }}
     {{ form_end(form) }}
-    <a href="{{ path('app_document_index') }}">Back to list</a>
+
+    <script>
+        (() => {
+            // grab the real selects
+            const roleSel = document.querySelector('select[name="document[targetRoles][]"]');
+            const tagSel  = document.querySelector('select[name="document[targetTags][]"]');
+            const userSel = document.querySelector('select[name="document[targetUsers][]"]');
+
+            // build our items array
+            function toArr(s, type) {
+                return Array.from(s.options).map(o => ({
+                    id: o.value, label: o.text, type, selected: o.selected
+                }));
+            }
+            let items = [
+                ...toArr(roleSel,'role'),
+                ...toArr(tagSel,'tag'),
+                ...toArr(userSel,'user')
+            ];
+
+            const pickr = document.getElementById('access-picker');
+            const selList = document.getElementById('selected-list');
+            const unselList = document.getElementById('unselected-list');
+
+            // render badges
+            function render() {
+                selList.innerHTML = '';
+                unselList.innerHTML = '';
+                items.forEach(i => {
+                    const span = document.createElement('span');
+                    const clr = i.type==='role' ? 'primary' : i.type==='tag' ? 'success' : 'danger';
+                    span.className = `badge border border-${clr} text-${clr} bg-light me-1 mb-1`;
+                    span.textContent = (i.type==='role' ? 'Rol: ' : i.type==='tag' ? 'Team: ' : 'Gebr.: ') + i.label;
+                    span.style.cursor = 'pointer';
+                    span.onclick = () => {
+                        i.selected = !i.selected;
+                        const sel = i.type==='role'? roleSel : i.type==='tag'? tagSel : userSel;
+                        sel.querySelector(`option[value="${i.id}"]`).selected = i.selected;
+                        render();
+                    };
+                    (i.selected ? selList : unselList).append(span);
+                });
+            }
+
+            // show picker only on Privé
+            document.querySelectorAll(`input[name="{{ form.public.vars.full_name }}"]`)
+                .forEach(radio => {
+                    radio.addEventListener('change', e => {
+                        pickr.style.display = e.target.value==='0' ? 'block' : 'none';
+                    });
+                });
+
+            // initial
+            render();
+        })();
+    </script>
 {% endblock %}

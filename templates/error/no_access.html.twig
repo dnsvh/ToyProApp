@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sorry, geen toegang{% endblock %}
+
+{% block body %}
+    <div class="container text-center mt-5">
+        <div class="alert alert-warning">
+            <h1>😢 Sorry, geen toegang</h1>
+            <p>Als je denkt dat dit een fout is, neem dan contact op met de directie.</p>
+            <a href="{{ path('job_list') }}" class="btn btn-primary mt-3">
+                ← Terug naar Vacatures
+            </a>
+        </div>
+    </div>
+{% endblock %}

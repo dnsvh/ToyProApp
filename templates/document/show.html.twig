@@ -4,44 +4,57 @@
 {% block title %}Document: {{ document.title }}{% endblock %}
 
 {% block body %}
-    <h1>Document Details</h1>
+    <div class="container my-4">
+        <h1 class="mb-4">Document: {{ document.title }}</h1>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ document.id }}</td>
-        </tr>
-        <tr>
-            <th>Title</th>
-            <td>{{ document.title }}</td>
-        </tr>
-        <tr>
-            <th>Filename</th>
-            {# Provide a download/view link for the file #}
-            <td>
-                <a href="{{ asset('uploads/documents/' ~ document.filename) }}"
-                   target="_blank">
-                    {{ document.filename }}
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <th>Upload Date</th>
-            <td>{{ document.uploadDate ? document.uploadDate|date('Y-m-d H:i') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Public</th>
-            <td>{{ document.public ? 'Yes' : 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Uploaded By</th>
-            <td>{{ document.uploadedBy ? document.uploadedBy.email : '–' }}</td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ document.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titel</th>
+                    <td>{{ document.title }}</td>
+                </tr>
+                <tr>
+                    <th>Bestandsnaam</th>
+                    <td>
+                        {# add an icon and text so it’s obvious this is a link #}
+                        <a href="{{ asset('uploads/documents/' ~ document.filename) }}" target="_blank" class="d-inline-flex align-items-center">
+                            <i class="bi bi-file-earmark-arrow-up me-2"></i>
+                            {{ document.filename }}
+                            <span class="ms-2 text-muted">(klik om te openen)</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Upload datum</th>
+                    <td>{{ document.uploadDate ? document.uploadDate|date('Y-m-d H:i') : '–' }}</td>
+                </tr>
+                <tr>
+                    <th>Openbaar</th>
+                    <td>{{ document.public ? 'Ja' : 'Nee' }}</td>
+                </tr>
+                <tr>
+                    <th>Geüpload door</th>
+                    <td>{{ document.uploadedBy ? document.uploadedBy.email : '–' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <a href="{{ path('app_document_index') }}" class="btn btn-secondary">Back to list</a>
-    <a href="{{ path('app_document_edit', {id: document.id}) }}" class="btn btn-primary">Edit</a>
-    <a href="{{ path('app_document_logs', {id: document.id}) }}" class="btn btn-info">View Logs</a>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="{{ path('app_document_index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Terug naar lijst
+            </a>
+            <a href="{{ path('app_document_edit', {id: document.id}) }}" class="btn btn-primary">
+                <i class="bi bi-pencil me-1"></i> Bewerken
+            </a>
+            <a href="{{ path('app_document_logs', {id: document.id}) }}" class="btn btn-info text-white">
+                <i class="bi bi-clock-history me-1"></i> Logs bekijken
+            </a>
+        </div>
+    </div>
 {% endblock %}

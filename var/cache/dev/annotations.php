@@ -66,12 +66,14 @@ return [[
 '[C]Symfony%5CBundle%5CFrameworkBundle%5CController%5CAbstractController%24container' => 1,
 'App%5CController%5CAdminController' => 0,
 '[C]App%5CController%5CAdminController' => 1,
-'App%5CController%5CAdminController%23register' => 0,
-'[C]App%5CController%5CAdminController%23register' => 1,
+'App%5CController%5CAdminController%23index' => 0,
+'[C]App%5CController%5CAdminController%23index' => 1,
 'App%5CController%5CAdminController%23manage' => 0,
 '[C]App%5CController%5CAdminController%23manage' => 1,
 'App%5CController%5CAdminController%23editUser' => 0,
 '[C]App%5CController%5CAdminController%23editUser' => 1,
+'App%5CController%5CAdminController%23register' => 0,
+'[C]App%5CController%5CAdminController%23register' => 1,
 'App%5CController%5CAnnouncementController' => 0,
 '[C]App%5CController%5CAnnouncementController' => 1,
 'App%5CController%5CAnnouncementController%23__construct' => 0,
@@ -92,22 +94,22 @@ return [[
 '[C]App%5CController%5CCalendarController' => 1,
 'App%5CController%5CCalendarController%23__construct' => 0,
 '[C]App%5CController%5CCalendarController%23__construct' => 1,
-'App%5CController%5CCalendarController%23monthView' => 2,
+'App%5CController%5CCalendarController%23monthView' => 0,
 '[C]App%5CController%5CCalendarController%23monthView' => 1,
-'App%5CController%5CCalendarController%23dayView' => 3,
+'App%5CController%5CCalendarController%23dayView' => 0,
 '[C]App%5CController%5CCalendarController%23dayView' => 1,
-'App%5CController%5CCalendarController%23clockIn' => 4,
+'App%5CController%5CCalendarController%23clockIn' => 0,
 '[C]App%5CController%5CCalendarController%23clockIn' => 1,
-'App%5CController%5CCalendarController%23clockOut' => 5,
+'App%5CController%5CCalendarController%23clockOut' => 0,
 '[C]App%5CController%5CCalendarController%23clockOut' => 1,
 'App%5CController%5CCalendarController%24entryRepo' => 0,
 '[C]App%5CController%5CCalendarController%24entryRepo' => 1,
-'App%5CController%5CCalendarController%24em' => 0,
-'[C]App%5CController%5CCalendarController%24em' => 1,
 'App%5CController%5CCalendarController%24userRepo' => 0,
 '[C]App%5CController%5CCalendarController%24userRepo' => 1,
 'App%5CController%5CCalendarController%24tagRepo' => 0,
 '[C]App%5CController%5CCalendarController%24tagRepo' => 1,
+'App%5CController%5CCalendarController%24em' => 0,
+'[C]App%5CController%5CCalendarController%24em' => 1,
 'App%5CController%5CCalendarEntryController' => 0,
 '[C]App%5CController%5CCalendarEntryController' => 1,
 'App%5CController%5CCalendarEntryController%23index' => 0,
@@ -126,7 +128,7 @@ return [[
 '[C]App%5CController%5CCommentController%23delete' => 1,
 'App%5CController%5CDashboardController' => 0,
 '[C]App%5CController%5CDashboardController' => 1,
-'App%5CController%5CDashboardController%23index' => 6,
+'App%5CController%5CDashboardController%23index' => 2,
 '[C]App%5CController%5CDashboardController%23index' => 1,
 'App%5CController%5CDocumentController' => 0,
 '[C]App%5CController%5CDocumentController' => 1,
@@ -144,18 +146,26 @@ return [[
 '[C]App%5CController%5CDocumentController%23delete' => 1,
 'App%5CController%5CDocumentLogController' => 0,
 '[C]App%5CController%5CDocumentLogController' => 1,
-'App%5CController%5CDocumentLogController%23viewLogs' => 7,
+'App%5CController%5CDocumentLogController%23viewLogs' => 3,
 '[C]App%5CController%5CDocumentLogController%23viewLogs' => 1,
 'App%5CController%5CJobsController' => 0,
 '[C]App%5CController%5CJobsController' => 1,
 'App%5CController%5CJobsController%23index' => 0,
 '[C]App%5CController%5CJobsController%23index' => 1,
+'App%5CController%5CJobsController%23show' => 0,
+'[C]App%5CController%5CJobsController%23show' => 1,
+'App%5CController%5CJobsController%24jobs' => 0,
+'[C]App%5CController%5CJobsController%24jobs' => 1,
 'App%5CController%5CSecurityController' => 0,
 '[C]App%5CController%5CSecurityController' => 1,
 'App%5CController%5CSecurityController%23login' => 0,
 '[C]App%5CController%5CSecurityController%23login' => 1,
 'App%5CController%5CSecurityController%23logout' => 0,
 '[C]App%5CController%5CSecurityController%23logout' => 1,
+'App%5CController%5CSecurityController%23forgot' => 0,
+'[C]App%5CController%5CSecurityController%23forgot' => 1,
+'App%5CController%5CSecurityController%23reset' => 0,
+'[C]App%5CController%5CSecurityController%23reset' => 1,
 'App%5CEntity%5CAnnouncement' => 0,
 '[C]App%5CEntity%5CAnnouncement' => 1,
 'App%5CEntity%5CAnnouncement%23__construct' => 0,
@@ -1166,228 +1176,8 @@ return [[
 ], [
 
 0 => [],
-1 => 1748948744,
+1 => 1749339048,
 2 => static function () {
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
-            clone $p['Symfony\\Component\\Routing\\Attribute\\Route'],
-        ],
-        null,
-        [
-            'Symfony\\Component\\Routing\\Attribute\\Route' => [
-                'path' => [
-                    '/month/{year<\\d{4}>}/{month<\\d{1,2}>}',
-                    '/month',
-                ],
-                'methods' => [
-                    [
-                        'GET',
-                    ],
-                    [
-                        'GET',
-                    ],
-                ],
-                'schemes' => [
-                    [],
-                    [],
-                ],
-                'name' => [
-                    'calendar_month_view',
-                    'calendar_month_default',
-                ],
-                'requirements' => [
-                    [],
-                    [],
-                ],
-                'options' => [
-                    [],
-                    [],
-                ],
-                'defaults' => [
-                    [],
-                    [],
-                ],
-                'host' => [
-                    null,
-                    null,
-                ],
-                'condition' => [
-                    null,
-                    null,
-                ],
-                'priority' => [
-                    null,
-                    null,
-                ],
-                'env' => [
-                    null,
-                    null,
-                ],
-            ],
-        ],
-        [
-            $o[0],
-            $o[1],
-        ],
-        []
-    );
-},
-3 => static function () {
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
-        ],
-        null,
-        [
-            'Symfony\\Component\\Routing\\Attribute\\Route' => [
-                'path' => [
-                    '/day',
-                ],
-                'methods' => [
-                    [
-                        'GET',
-                        'POST',
-                    ],
-                ],
-                'schemes' => [
-                    [],
-                ],
-                'name' => [
-                    'calendar_day_view',
-                ],
-                'requirements' => [
-                    [],
-                ],
-                'options' => [
-                    [],
-                ],
-                'defaults' => [
-                    [],
-                ],
-                'host' => [
-                    null,
-                ],
-                'condition' => [
-                    null,
-                ],
-                'priority' => [
-                    null,
-                ],
-                'env' => [
-                    null,
-                ],
-            ],
-        ],
-        [
-            $o[0],
-        ],
-        []
-    );
-},
-4 => static function () {
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
-        ],
-        null,
-        [
-            'Symfony\\Component\\Routing\\Attribute\\Route' => [
-                'path' => [
-                    '/clock-in',
-                ],
-                'methods' => [
-                    [
-                        'POST',
-                    ],
-                ],
-                'schemes' => [
-                    [],
-                ],
-                'name' => [
-                    'calendar_clock_in',
-                ],
-                'requirements' => [
-                    [],
-                ],
-                'options' => [
-                    [],
-                ],
-                'defaults' => [
-                    [],
-                ],
-                'host' => [
-                    null,
-                ],
-                'condition' => [
-                    null,
-                ],
-                'priority' => [
-                    null,
-                ],
-                'env' => [
-                    null,
-                ],
-            ],
-        ],
-        [
-            $o[0],
-        ],
-        []
-    );
-},
-5 => static function () {
-    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
-        $o = [
-            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
-        ],
-        null,
-        [
-            'Symfony\\Component\\Routing\\Attribute\\Route' => [
-                'path' => [
-                    '/clock-out',
-                ],
-                'methods' => [
-                    [
-                        'POST',
-                    ],
-                ],
-                'schemes' => [
-                    [],
-                ],
-                'name' => [
-                    'calendar_clock_out',
-                ],
-                'requirements' => [
-                    [],
-                ],
-                'options' => [
-                    [],
-                ],
-                'defaults' => [
-                    [],
-                ],
-                'host' => [
-                    null,
-                ],
-                'condition' => [
-                    null,
-                ],
-                'priority' => [
-                    null,
-                ],
-                'env' => [
-                    null,
-                ],
-            ],
-        ],
-        [
-            $o[0],
-        ],
-        []
-    );
-},
-6 => static function () {
     return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
         $o = [
             clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),
@@ -1438,7 +1228,7 @@ return [[
         []
     );
 },
-7 => static function () {
+3 => static function () {
     return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
         $o = [
             clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Attribute\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Attribute\\Route')),

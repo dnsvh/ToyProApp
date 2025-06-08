@@ -1,13 +1,153 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Announcement{% endblock %}
+{% block title %}Aankondiging bewerken{% endblock %}
 
 {% block body %}
-    <h1>Edit Announcement</h1>
+    <div class="container my-5">
+        <h1 class="mb-4">Aankondiging bewerken</h1>
 
-    {{ include('announcement/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ form_start(form) }}
 
-    <a href="{{ path('app_announcement_index') }}">back to list</a>
+        <div class="mb-3">
+            {{ form_label(form.title, 'Titel') }}
+            {{ form_widget(form.title, {attr:{class:'form-control'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
 
-    {{ include('announcement/_delete_form.html.twig') }}
+        <div class="mb-3">
+            {{ form_label(form.content, 'Inhoud') }}
+            {{ form_widget(form.content, {attr:{class:'form-control', rows:5}}) }}
+            {{ form_errors(form.content) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.imageFile, 'Afbeelding (optioneel)') }}
+            {{ form_widget(form.imageFile, {attr:{class:'form-control'}}) }}
+            {{ form_errors(form.imageFile) }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-check-label me-3">
+                <input
+                        class="form-check-input me-1"
+                        type="radio"
+                        id="announcement_public"
+                        name="{{ form.isPublic.vars.full_name }}"
+                        value="1"
+                        {{ form.isPublic.vars.data ? 'checked' }}
+                > Publiek
+            </label>
+            <label class="form-check-label">
+                <input
+                        class="form-check-input me-1"
+                        type="radio"
+                        id="announcement_private"
+                        name="{{ form.isPublic.vars.full_name }}"
+                        value="0"
+                        {{ not form.isPublic.vars.data ? 'checked' }}
+                > Privé
+            </label>
+        </div>
+
+        {# Hidden real inputs #}
+        <div style="display:none">
+            {{ form_row(form.isPublic) }}
+            {{ form_row(form.targetRoles) }}
+            {{ form_row(form.targetTags) }}
+            {{ form_row(form.targetUsers) }}
+        </div>
+
+        <div id="access-picker" class="mb-4" style="display:none">
+            <h5>Geselecteerde toegang</h5>
+            <div id="selected-list" class="border p-2 mb-2" style="min-height:2rem"></div>
+            <input type="text" id="search-selected" class="form-control form-control-sm mb-3" placeholder="Zoeken…">
+
+            <h5>Beschikbaar</h5>
+            <input type="text" id="search-unselected" class="form-control form-control-sm mb-2" placeholder="Zoeken…">
+            <div id="unselected-list" class="border p-2" style="min-height:2rem"></div>
+        </div>
+
+        <div class="form-check mb-3">
+            {{ form_widget(form.infoboard, {attr:{class:'form-check-input',id:'infoboard'}}) }}
+            <label class="form-check-label" for="infoboard">Tonen op infobord</label>
+        </div>
+
+        <div class="form-check mb-3">
+            {{ form_widget(form.commentsEnabled, {attr:{class:'form-check-input',id:'commentsEnabled'}}) }}
+            <label class="form-check-label" for="commentsEnabled">Reacties toestaan</label>
+        </div>
+
+        <div class="form-check mb-4">
+            {{ form_widget(form.visible, {attr:{class:'form-check-input',id:'visible'}}) }}
+            <label class="form-check-label" for="visible">Zichtbaar voor gebruikers</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-pencil me-1"></i> Bijwerken
+        </button>
+        <a href="{{ path('app_announcement_index') }}" class="btn btn-secondary ms-2">
+            <i class="bi bi-arrow-left me-1"></i> Terug
+        </a>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            // toggle access picker
+            const pub = document.getElementById('announcement_public');
+            const priv = document.getElementById('announcement_private');
+            const picker = document.getElementById('access-picker');
+            function togglePicker(){ picker.style.display = priv.checked ? 'block' : 'none'; }
+            pub.addEventListener('change',togglePicker);
+            priv.addEventListener('change',togglePicker);
+            togglePicker();
+
+            // build dual-list
+            const roleName = '{{ form.targetRoles.vars.full_name }}';
+            const tagName  = '{{ form.targetTags.vars.full_name }}';
+            const userName = '{{ form.targetUsers.vars.full_name }}';
+            const roleSel = document.querySelector(`select[name="${roleName}"]`);
+            const tagSel  = document.querySelector(`select[name="${tagName}"]`);
+            const userSel = document.querySelector(`select[name="${userName}"]`);
+            let items = [
+                ...Array.from(roleSel.options).map(o=>({id:o.value,label:o.text,type:'role',selected:o.selected})),
+                ...Array.from(tagSel.options).map(o=>({id:o.value,label:o.text,type:'tag',selected:o.selected})),
+                ...Array.from(userSel.options).map(o=>({id:o.value,label:o.text,type:'user',selected:o.selected}))
+            ];
+            const selList = document.getElementById('selected-list');
+            const unselList = document.getElementById('unselected-list');
+            function render(){
+                selList.innerHTML=''; unselList.innerHTML='';
+                items.forEach(i=>{
+                    const span = document.createElement('span');
+                    const clr = i.type==='role'?'primary':i.type==='tag'?'success':'danger';
+                    const prefix = i.type==='role'?'Rol: ':i.type==='tag'?'Team: ':'Gebr.: ';
+                    span.className = `badge border-${clr} text-${clr} bg-light me-1 mb-1`;
+                    span.textContent = prefix+i.label;
+                    span.style.cursor='pointer';
+                    span.onclick = ()=>{
+                        i.selected = !i.selected;
+                        const sel = i.type==='role'?roleSel:i.type==='tag'?tagSel:userSel;
+                        sel.querySelector(`option[value="${i.id}"]`).selected = i.selected;
+                        render();
+                    };
+                    (i.selected?selList:unselList).append(span);
+                });
+            }
+            render();
+
+            // simple search
+            document.getElementById('search-selected')
+                .addEventListener('input', e=>{
+                    const q=e.target.value.toLowerCase();
+                    selList.childNodes.forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'inline-block':'none');
+                });
+            document.getElementById('search-unselected')
+                .addEventListener('input', e=>{
+                    const q=e.target.value.toLowerCase();
+                    unselList.childNodes.forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'inline-block':'none');
+                });
+        });
+    </script>
 {% endblock %}
